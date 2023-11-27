@@ -36,7 +36,7 @@ const AddNurse = () => {
     }
     axios
       .post(
-        "http://localhost:5000/api/admin/nurse/create",
+        "https://onehealth-backend.onrender.com/api/admin/nurse/create",
         payload,
         headerToken
       )

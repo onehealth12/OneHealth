@@ -16,7 +16,7 @@ const DoctorInformation = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/receptionist/doctor/get", headerToken)
+      .get("https://onehealth-backend.onrender.com/api/receptionist/doctor/get", headerToken)
       .then((res) => {
         setDoctors(res.data);
       });

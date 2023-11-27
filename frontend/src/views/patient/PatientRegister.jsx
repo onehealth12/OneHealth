@@ -39,7 +39,7 @@ const PatientRegister = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-    .post("http://localhost:5000/api/patient/register", {...payload})
+    .post("https://onehealth-backend.onrender.com/api/patient/register", {...payload})
     .then(() => {
       console.log("Register success")
       navigate("/login");

@@ -24,7 +24,7 @@ const Staff = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/receptionist/get", headerToken)
+      .get("https://onehealth-backend.onrender.com/api/admin/receptionist/get", headerToken)
       .then((res) => {
         setReceptionists(res.data);
       })
@@ -41,7 +41,7 @@ const Staff = () => {
       email,
       password
     }
-    axios.post('http://localhost:5000/api/admin/receptionist/create', payload, headerToken)
+    axios.post('https://onehealth-backend.onrender.com/api/admin/receptionist/create', payload, headerToken)
           .then((res) => {
             setFirstName('')
             setLastName('')
@@ -55,7 +55,7 @@ const Staff = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:5000/api/admin/receptionist/${id}`, headerToken)
+      .delete(`https://onehealth-backend.onrender.com/api/admin/receptionist/${id}`, headerToken)
       .then((res) => {
         window.location.reload();
       })

@@ -22,7 +22,7 @@ const Navbar = ({ userRole }) => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/patient/logout",
+        "https://onehealth-backend.onrender.com/api/patient/logout",
         null
       );
 

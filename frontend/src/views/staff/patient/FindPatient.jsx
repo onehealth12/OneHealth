@@ -12,7 +12,7 @@ const FindPatient = () => {
     setIsLoading(true);
     try {
       const response = await Axios.get(
-        `http://localhost:5000/api/receptionist/patient/search?q=${searchTerm}`
+        `https://onehealth-backend.onrender.com/api/receptionist/patient/search?q=${searchTerm}`
       );
       setSearchResults(response.data);
     } catch (error) {

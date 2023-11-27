@@ -29,7 +29,7 @@ const CreatePatient = () => {
       password
     }
 
-    axios.post('http://localhost:5000/api/receptionist/patient/register', payload)
+    axios.post('https://onehealth-backend.onrender.com/api/receptionist/patient/register', payload)
           .then((res) => {
             setFirstName('')
             setLastName('')

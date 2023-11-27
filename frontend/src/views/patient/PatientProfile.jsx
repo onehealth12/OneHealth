@@ -65,7 +65,7 @@ const PatientProfile = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/patient/get", headerToken)
+      .get("https://onehealth-backend.onrender.com/api/patient/get", headerToken)
       .then((res) => {
         const { firstName, lastName, sex, birthday, email, mobileNumber, _id } =
           res.data;
@@ -100,7 +100,7 @@ const PatientProfile = () => {
 
     axios
       .put(
-        `http://localhost:5000/api/patient/${id}`,
+        `https://onehealth-backend.onrender.com/api/patient/${id}`,
         updatePatient,
         headerToken
       )

@@ -53,7 +53,7 @@ const ViewPdf = () => {
   useEffect(() => {
     // Fetch the appointment data using the appointment ID
     axios
-      .get(`http://localhost:5000/api/patient/appointment/${appointmentId}`)
+      .get(`https://onehealth-backend.onrender.com/api/patient/appointment/${appointmentId}`)
       .then((res) => {
         // Set the appointment data in the state
         setAppointmentData(res.data);

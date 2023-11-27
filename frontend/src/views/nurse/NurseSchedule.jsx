@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import { useStore } from "../../store";
 import UploadFile from "../../components/modals/UploadFile";
 import io from "socket.io-client";
-const socket = io("http://localhost:5000"); 
+const socket = io("https://onehealth-backend.onrender.com"); 
 import { GrLinkNext } from "react-icons/gr";
 
 const NurseSchedule = () => {

@@ -18,7 +18,7 @@ const StaffNavigation = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/receptionist/logout",
+        "https://onehealth-backend.onrender.com/api/receptionist/logout",
         null
       );
 

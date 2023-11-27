@@ -22,7 +22,7 @@ const ManageSchedule = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/doctor/availability/get`, headerToken)
+      .get(`https://onehealth-backend.onrender.com/api/doctor/availability/get`, headerToken)
       .then((res) => {
         const adjustedEvents = res.data.map((event) => {
           const adjustedStart = new Date(event.start);
@@ -79,7 +79,7 @@ const ManageSchedule = () => {
       // Make an API call to delete the event from the database
       axios
         .delete(
-          `http://localhost:5000/api/doctor/availability/${eventId}`,
+          `https://onehealth-backend.onrender.com/api/doctor/availability/${eventId}`,
           headerToken
         )
         .then((res) => {

@@ -7,7 +7,7 @@ export const useStore = create((set) => ({
   //Doctor Functions
   getTodaysAppointments: (token) => {
     axios
-      .get("http://localhost:5000/api/doctor/appointment/today", {
+      .get("https://onehealth-backend.onrender.com/api/doctor/appointment/today", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -25,7 +25,7 @@ export const useStore = create((set) => ({
   
   getAllTimeAppointments: (token) => {
     axios
-      .get("http://localhost:5000/api/doctor/appointment/get", {
+      .get("https://onehealth-backend.onrender.com/api/doctor/appointment/get", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -41,7 +41,7 @@ export const useStore = create((set) => ({
       .catch((err) => console.log(err));
   },
   updateAppointmentStatus: (id, status, token) => {
-    axios.put(`http://localhost:5000/api/doctor/appointment/${id}`, { status }, {
+    axios.put(`https://onehealth-backend.onrender.com/api/doctor/appointment/${id}`, { status }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -53,7 +53,7 @@ export const useStore = create((set) => ({
     .catch((err) => console.log(`Error: ${err}`));
   },
   addDiagnosis: (id, selectedDiagnosis) => {
-    axios.put(`http://localhost:5000/api/doctor/appointment/diagnosis/${id}/${selectedDiagnosis}`)
+    axios.put(`https://onehealth-backend.onrender.com/api/doctor/appointment/diagnosis/${id}/${selectedDiagnosis}`)
       .then((res) => {
         set((state) => ({
           appointments: state.appointments.map((appointment) =>
@@ -65,7 +65,7 @@ export const useStore = create((set) => ({
   },
   createPrescription: async (id, medicines) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/doctor/appointment/prescription/create", {
+      const response = await axios.post("https://onehealth-backend.onrender.com/api/doctor/appointment/prescription/create", {
         appointmentId: id,
         medicines: medicines // Assuming 'medicines' is an array of objects containing medicine details
       });
@@ -79,7 +79,7 @@ export const useStore = create((set) => ({
  //Nurse Functions
   getAllTodaysAppointments: (token) => {
     axios
-      .get("http://localhost:5000/api/nurse/appointment/get", {
+      .get("https://onehealth-backend.onrender.com/api/nurse/appointment/get", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -98,7 +98,7 @@ export const useStore = create((set) => ({
   createLabResult: async (id, formData) => {
     console.log(formData)
     try {
-      const response = await axios.post(`http://localhost:5000/api/nurse/appointment/labresult/create/`, formData, {
+      const response = await axios.post(`https://onehealth-backend.onrender.com/api/nurse/appointment/labresult/create/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -118,7 +118,7 @@ export const useReceptionistStore = create((set) =>({
   availabilities: [],
   getAllTodaysAppointments: (token) => {
     axios
-      .get("http://localhost:5000/api/receptionist/appointment/get", {
+      .get("https://onehealth-backend.onrender.com/api/receptionist/appointment/get", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -136,7 +136,7 @@ export const useReceptionistStore = create((set) =>({
   },
   getAllAppointments: () => {
     axios
-    .get("http://localhost:5000/api/receptionist/appointment/")
+    .get("https://onehealth-backend.onrender.com/api/receptionist/appointment/")
     .then((res) => {
       set({ appointments: res.data });
     })
@@ -144,7 +144,7 @@ export const useReceptionistStore = create((set) =>({
   },
   getAllAvailability: () => {
     axios
-    .get("http://localhost:5000/api/receptionist/availability/get")
+    .get("https://onehealth-backend.onrender.com/api/receptionist/availability/get")
     .then((res) => {
       set({ availabilities: res.data });
     })
@@ -157,7 +157,7 @@ export const usePatientStore = create((set) => ({
   appointments:[],
   getAppointments: (token) => {
     return axios
-      .get("http://localhost:5000/api/patient/appointment/get", {
+      .get("https://onehealth-backend.onrender.com/api/patient/appointment/get", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -48,7 +48,7 @@ const AddDoctor = () => {
     };
     axios
       .post(
-        "http://localhost:5000/api/admin/doctor/create",
+        "https://onehealth-backend.onrender.com/api/admin/doctor/create",
         payload,
         headerToken
       )
@@ -72,7 +72,7 @@ const AddDoctor = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/department/get")
+      .get("https://onehealth-backend.onrender.com/api/department/get")
       .then((res) => {
         setDepartments(res.data);
       })

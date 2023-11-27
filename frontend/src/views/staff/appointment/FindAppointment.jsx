@@ -3,7 +3,7 @@ import Sidebar from "../../../components/Sidebar";
 import { useReceptionistStore, useStore } from "../../../store";
 import io from "socket.io-client"; // Import the socket.io-client library
 
-const socket = io("http://localhost:5000"); 
+const socket = io("https://onehealth-backend.onrender.com"); 
 
 const FindAppointment = () => {
   const [userRole, setUserRole] = useState("receptionist");

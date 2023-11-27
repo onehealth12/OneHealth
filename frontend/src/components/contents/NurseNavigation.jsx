@@ -5,7 +5,7 @@ const NurseNavigation = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    axios.post('http://localhost:5000/api/nurse/logout', null)
+    axios.post('https://onehealth-backend.onrender.com/api/nurse/logout', null)
           .then((res) => {
             localStorage.removeItem("token")
             navigate('/hospital/auth/login')

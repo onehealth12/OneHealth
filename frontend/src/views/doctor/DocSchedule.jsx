@@ -6,7 +6,7 @@ import Diagnose from "../../components/modals/Diagnose";
 import { GrLinkNext } from "react-icons/gr";
 import io from "socket.io-client"; // Import the socket.io-client library
 
-const socket = io("http://localhost:5000"); 
+const socket = io("https://onehealth-backend.onrender.com"); 
 
 const DocSchedule = () => {
   const [userRole, setUserRole] = useState("doctor");
