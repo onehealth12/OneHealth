@@ -11,7 +11,7 @@ const Diagnose = ({ visible, onClose, id }) => {
 
 
   useEffect(() => {
-   axios.get('http://localhost:5000/api/doctor/department')
+   axios.get('https://onehealth-backend.onrender.com/api/doctor/department')
         .then((res) => {
           setDepartments(res.data)
         })
@@ -22,7 +22,7 @@ const Diagnose = ({ visible, onClose, id }) => {
     if (selectedDepartment) {
       axios
         .get(
-          `http://localhost:5000/api/doctor/diagnosis/${selectedDepartment}`
+          `https://onehealth-backend.onrender.com/api/doctor/diagnosis/${selectedDepartment}`
         )
         .then((res) => {
           setDiagnoses(res.data);
