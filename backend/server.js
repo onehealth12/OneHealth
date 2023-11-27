@@ -46,7 +46,7 @@ const server = app.listen(port, () => {
 
 io = require ('socket.io')(server, {
   cors: {
-    origin: '*',
+    origin: 'https://onehealth-frontend.onrender.com',
   },
 })
 
