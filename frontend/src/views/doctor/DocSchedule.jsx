@@ -161,7 +161,7 @@ const filteredAppointments = appointments.filter(appointment =>
                               In Progress
                             </span>
                             <button
-                              className=" text-white px-3 py-1 rounded-md"
+                              className="  px-3 py-1 rounded-md"
                               onClick={() =>
                                 handleUpdate(appointment._id, "Assessment")
                               }
@@ -185,7 +185,7 @@ const filteredAppointments = appointments.filter(appointment =>
                               In Progress
                             </span>
                             <button
-                              className=" text-white px-3 py-1 rounded-md"
+                              className="  px-3 py-1 rounded-md"
                               onClick={() =>
                                 handleUpdate(appointment._id, "Testing")
                               }
@@ -210,7 +210,7 @@ const filteredAppointments = appointments.filter(appointment =>
                             </span>
                             <div>
                               <button
-                                className="bg-blue-500 text-white px-3 py-1 rounded-md mx-1"
+                                className="bg-blue-500  px-3 py-1 rounded-md mx-1"
                                 onClick={() => {
                                   setSelectedAppointmentId(appointment._id);
                                   setShowDiagnose(true);
@@ -219,7 +219,7 @@ const filteredAppointments = appointments.filter(appointment =>
                                 D
                               </button>
                               <button
-                                className="bg-blue-500 text-white px-3 py-1 rounded-md mr-4"
+                                className="bg-blue-500  px-3 py-1 rounded-md mr-4"
                                 onClick={() => {
                                   setSelectedAppointmentId(appointment._id);
                                   setShowAddPrescriptionModal(true);
