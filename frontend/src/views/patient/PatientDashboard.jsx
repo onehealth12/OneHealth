@@ -80,11 +80,11 @@ const PatientDashboard = () => {
                     </td>
                     <td className="py-3 px-6">APPT-{appointment._id}</td>
                     <td className="py-3 px-6">
-                      {appointment.doctorId.dept_id.name}
+                      {appointment.doctorId?.dept_id?.name}
                     </td>
                     <td className="py-3 px-6">
-                      Dr. {appointment.doctorId.firstName}{" "}
-                      {appointment.doctorId.lastName}
+                      Dr. {appointment.doctorId?.firstName}{" "}
+                      {appointment.doctorId?.lastName}
                     </td>
                     <td className="py-3 px-6">{appointment.reason}</td>
                     <td className="py-3 px-6">{appointment.diagnosis?.name}</td>
