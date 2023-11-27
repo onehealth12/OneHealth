@@ -135,7 +135,7 @@ const PatientHome = () => {
                     color="white"
                     fontSize="3em"
                   />
-                  <p className="break-words">Municipal Compound, Brgy. Sto. Domingo, Cainta, Rizal</p>
+                  <p className="break-words text-center">Municipal Compound, Brgy. Sto. Domingo, Cainta, Rizal</p>
                 </div>
                 <div className="w-4/5 p-4">
                   <BsFillTelephoneFill
@@ -143,7 +143,7 @@ const PatientHome = () => {
                     color="white"
                     fontSize="2.7em"
                   />
-                  <p className="break-words">8696-26-04 to 05</p>
+                  <p className="break-words text-center">8696-26-04 to 05</p>
                 </div>
                 <div className="w-4/5 p-4">
                   <BsEnvelopeFill
@@ -151,7 +151,7 @@ const PatientHome = () => {
                     color="white"
                     fontSize="2.7em"
                   />
-                  <p className="break-words">onecainta@gmail.com</p>
+                  <p className="break-words text-center">onecainta@gmail.com</p>
                 </div>
               </div>
             </form>

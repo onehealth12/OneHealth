@@ -6,6 +6,8 @@ Project Description
 
 ### Todo
 
+- [ ] Manage Availability onsubmit reload  
+- [ ] Select Time Modal - remove delete button  
 - [ ] Private Routes  
 - [ ] Change Password Modal  
 
