@@ -138,7 +138,7 @@ const filteredAppointments = appointments.filter(appointment =>
                               In Progress
                             </span>
                             <button
-                              className="text-white px-3 py-1 rounded-md"
+                              className="px-3 py-1 rounded-md"
                               onClick={() =>
                                 handleUpdate(appointment._id, "Reception")
                               }
@@ -162,7 +162,7 @@ const filteredAppointments = appointments.filter(appointment =>
                               In Progress
                             </span>
                             <button
-                              className="text-white px-3 py-1 rounded-md"
+                              className="px-3 py-1 rounded-md"
                               onClick={() =>
                                 handleUpdate(appointment._id, "Assessment")
                               }
@@ -187,7 +187,7 @@ const filteredAppointments = appointments.filter(appointment =>
                             </span>
                             <div>
                               <button
-                                className="bg-[#4867D6] text-white px-3 py-1 rounded-md mr-4"
+                                className="bg-[#4867D6] px-3 py-1 rounded-md mr-4"
                                 onClick={() => {
                                   setSelectedAppointmentId(appointment._id);
                                   setShowUpload(true);
@@ -196,7 +196,7 @@ const filteredAppointments = appointments.filter(appointment =>
                                 Lab Result
                               </button>
                               <button
-                                className="text-white px-3 py-1 rounded-md"
+                                className="px-3 py-1 rounded-md"
                                 onClick={() =>
                                   handleUpdate(appointment._id, "Testing")
                                 }
