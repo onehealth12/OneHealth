@@ -104,7 +104,7 @@ const FindAppointment = () => {
             </div>
           </div>
           <div className="">
-          <div className=" overflow-y-auto max-h-[600px]">
+            <div className=" overflow-y-auto max-h-[600px]">
               <table className="w-full border-collapse border text-sm mx-auto">
                 <thead className="text-xs bg-grey-300 uppercase bg-gray-50 sticky top-0">
                   <tr className="text-white text-center">
