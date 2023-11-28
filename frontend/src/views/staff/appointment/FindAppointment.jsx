@@ -64,9 +64,29 @@ const FindAppointment = () => {
       appointment.appt_status === "Reception" ||
       appointment.appt_status === "Upcoming"
   );
+
+  const formatTime = (date) => {
+    const options = { hour: 'numeric', minute: '2-digit', hour12: true };
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  };
+
+  const sortedStatusOrder = ["Upcoming", "Reception", "Assessment", "Testing", "Consultation"];
+
+  const compareStatus = (a, b) => {
+    const indexA = sortedStatusOrder.indexOf(a);
+    const indexB = sortedStatusOrder.indexOf(b);
+  
+    return indexA - indexB;
+  };
+  
+  const sortedAppointments = filteredAppointments.sort((a, b) => {
+    const statusA = a.appt_status;
+    const statusB = b.appt_status;
+  
+    ret
   return (
     <>
-      <div className="flex w-screen">
+      <div className="flex h-screen">
         <Sidebar userRole={userRole} />
         <div className=" w-full ml-8">
           <div className="flex flex-col items-center">
@@ -84,7 +104,7 @@ const FindAppointment = () => {
             </div>
           </div>
           <div className="mt-32">
-            <div className="p-4">
+            <div className="overflow-y-auto max-h-[600px]">
               <table className="w-full border-collapse border text-sm mx-auto">
                 <thead className="text-xs bg-grey-300 uppercase bg-gray-50">
                   <tr className="text-white text-center">
@@ -99,12 +119,12 @@ const FindAppointment = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredAppointments.length === 0 ? (
+                  {sortedAppointments.length === 0 ? (
                     <tr>
                       <td>No data</td>
                     </tr>
                   ) : (
-                    filteredAppointments.map((appointment) => (
+                    sortedAppointments.map((appointment) => (
                       <tr className="text-center" key={appointment._id}>
                         <td className="py-3 px-6">
                           {new Date(
@@ -112,9 +132,7 @@ const FindAppointment = () => {
                           ).toLocaleDateString()}
                         </td>
                         <td className="py-3 px-6">
-                          {new Date(
-                            appointment.appointmentDateTime
-                          ).toLocaleTimeString()}
+                        {formatTime(new Date(appointment.appointmentDateTime))}
                         </td>
                         <td className="py-3 px-6">{appointment._id}</td>
                         <td className="py-3 px-6">
