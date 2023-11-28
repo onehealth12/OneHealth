@@ -204,15 +204,17 @@ const ReceptionistDashboard = () => {
                   {availableDoctors.map((doctor) => (
                     <tr key={doctor._id} className="border-b">
                       <td className="py-2 text-center">
-                        {doctor.firstName && doctor.lastName
+                        {doctor && doctor.firstName && doctor.lastName
                           ? `${doctor.firstName} ${doctor.lastName}`
                           : "N/A"}
                       </td>
                       <td className="py-2 text-center">
-                        {doctor.specialization || "N/A"}
+                        {doctor && doctor.specialization
+                          ? doctor.specialization
+                          : "N/A"}
                       </td>
                       <td className="py-2 text-center">
-                        {doctor.dept_id && doctor.dept_id.name
+                        {doctor && doctor.dept_id && doctor.dept_id.name
                           ? doctor.dept_id.name
                           : "N/A"}
                       </td>
