@@ -82,8 +82,6 @@ const FindAppointment = () => {
   const sortedAppointments = filteredAppointments.sort((a, b) => {
     const statusA = a.appt_status;
     const statusB = b.appt_status;
-  
-    ret
   return (
     <>
       <div className="flex h-screen">
