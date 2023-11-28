@@ -137,7 +137,7 @@ const filteredAppointments = appointments.filter(appointment =>
                               In Progress
                             </span>
                             <button
-                              className=" text-white px-3 py-1 rounded-md"
+                              className=" px-3 py-1 rounded-md"
                               onClick={() =>
                                 handleUpdate(appointment._id, "Reception")
                               }

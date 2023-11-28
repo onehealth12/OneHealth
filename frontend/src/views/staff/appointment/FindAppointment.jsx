@@ -103,10 +103,10 @@ const FindAppointment = () => {
               />
             </div>
           </div>
-          <div className="mt-32">
-            <div className="overflow-y-auto max-h-[600px]">
+          <div className="">
+          <div className=" overflow-y-auto max-h-[600px]">
               <table className="w-full border-collapse border text-sm mx-auto">
-                <thead className="text-xs bg-grey-300 uppercase bg-gray-50">
+                <thead className="text-xs bg-grey-300 uppercase bg-gray-50 sticky top-0">
                   <tr className="text-white text-center">
                     <th className="py-6 px-6 bg-[#4867D6]">Date</th>
                     <th className="py-6 px-6 bg-[#4867D6]">Time</th>
