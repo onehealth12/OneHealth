@@ -22,8 +22,9 @@ const PatientDashboard = () => {
       window.location = "/login"; // Replace "/login" with the desired redirect path
     }
   }, [token]);
-  
-  const username = tokenObject.name;
+
+  const username = tokenObject ? tokenObject.name : null;
+
 
   const { getAppointments, appointments } = usePatientStore();
 
@@ -88,7 +89,7 @@ const PatientDashboard = () => {
                     </td>
                     <td className="py-3 px-6">APPT-{appointment._id}</td>
                     <td className="py-3 px-6">
-                      {appointment.doctorId?.dept_id?.name}
+                    {appointment.doctorId && appointment.doctorId.dept_id && appointment.doctorId.dept_id.name}
                     </td>
                     <td className="py-3 px-6">
                       Dr. {appointment.doctorId?.firstName}{" "}
