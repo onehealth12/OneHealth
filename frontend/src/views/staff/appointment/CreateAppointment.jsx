@@ -80,7 +80,7 @@ const CreateAppointment = () => {
             date <= endDate;
             date.setDate(date.getDate())
           ) {
-            dates.push(new Date(date)); // Create a new Date object to avoid reference issues
+            dates.push(new Date(date) + 1); // Create a new Date object to avoid reference issues
           }
           return dates;
         })
