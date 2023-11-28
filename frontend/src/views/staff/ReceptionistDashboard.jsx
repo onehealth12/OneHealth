@@ -71,19 +71,25 @@ const ReceptionistDashboard = () => {
     "November",
     "December",
   ];
-  const filteredAppointments = selectedReason === "All"
-  ? appointments
-  : appointments.filter(appointment => appointment.reason === selectedReason);
+  const filteredAppointments =
+    selectedReason === "All"
+      ? appointments
+      : appointments.filter(
+          (appointment) => appointment.reason === selectedReason
+        );
 
   // Aggregate appointments for each month
-  const monthlyAppointments = filteredAppointments.reduce((acc, appointment) => {
-    const appointmentMonth = new Date(
-      appointment.appointmentDateTime
-    ).getMonth();
-    acc[monthNames[appointmentMonth]] =
-      (acc[monthNames[appointmentMonth]] || 0) + 1;
-    return acc;
-  }, {});
+  const monthlyAppointments = filteredAppointments.reduce(
+    (acc, appointment) => {
+      const appointmentMonth = new Date(
+        appointment.appointmentDateTime
+      ).getMonth();
+      acc[monthNames[appointmentMonth]] =
+        (acc[monthNames[appointmentMonth]] || 0) + 1;
+      return acc;
+    },
+    {}
+  );
 
   // Prepare data for the bar chart
   const data = monthNames.map((month) => ({
@@ -94,14 +100,16 @@ const ReceptionistDashboard = () => {
   const getCurrentAndPreviousMonth = (date) => {
     const currentMonth = date.getMonth();
     const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-  
+
     return {
       currentMonth: monthNames[currentMonth],
       previousMonth: monthNames[previousMonth],
     };
   };
 
-  const { currentMonth, previousMonth } = getCurrentAndPreviousMonth(new Date());
+  const { currentMonth, previousMonth } = getCurrentAndPreviousMonth(
+    new Date()
+  );
   // Calculate percentage change compared to the previous month
   const calculatePercentageChange = (currentMonth, previousMonth) => {
     if (previousMonth === 0 && currentMonth === 0) {
@@ -120,7 +128,6 @@ const ReceptionistDashboard = () => {
 
   // Find the index of the previous month
   const previousMonthIndex = monthNames.indexOf(previousMonth);
-
 
   // Calculate the percentage change
   const percentageChange = calculatePercentageChange(
@@ -146,7 +153,6 @@ const ReceptionistDashboard = () => {
     const formattedEndTime = new Date(endTime).toLocaleTimeString();
     return `${formattedStartTime} - ${formattedEndTime}`;
   };
-
 
   return (
     <div className="flex h-screen">
@@ -198,13 +204,17 @@ const ReceptionistDashboard = () => {
                   {availableDoctors.map((doctor) => (
                     <tr key={doctor._id} className="border-b">
                       <td className="py-2 text-center">
-                        {doctor.firstName} {doctor.lastName}
+                        {doctor.firstName && doctor.lastName
+                          ? `${doctor.firstName} ${doctor.lastName}`
+                          : "N/A"}
                       </td>
                       <td className="py-2 text-center">
-                        {doctor.specialization}
+                        {doctor.specialization || "N/A"}
                       </td>
                       <td className="py-2 text-center">
-                        {doctor.dept_id.name}
+                        {doctor.dept_id && doctor.dept_id.name
+                          ? doctor.dept_id.name
+                          : "N/A"}
                       </td>
                     </tr>
                   ))}
@@ -215,7 +225,7 @@ const ReceptionistDashboard = () => {
         </div>
         <div className="bg-white rounded-md p-4 shadow-lg">
           <div className="w-full">
-          <div className="flex items-center justify-center mb-4">
+            <div className="flex items-center justify-center mb-4">
               <label className="mr-2">Filter by Reason:</label>
               <select
                 value={selectedReason}
