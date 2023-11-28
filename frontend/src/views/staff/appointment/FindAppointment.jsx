@@ -122,11 +122,11 @@ const FindAppointment = () => {
                           {appointment.patientId.lastName}
                         </td>
                         <td className="py-3 px-6">
-                          {appointment.doctorId.firstName}{" "}
-                          {appointment.doctorId.lastName}
+                        {appointment.doctorId && appointment.doctorId.firstName}{" "}
+        {appointment.doctorId && appointment.doctorId.lastName}
                         </td>
                         <td className="py-3 px-6">
-                          {appointment.doctorId.dept_id.name}
+                        {appointment.doctorId && appointment.doctorId.dept_id && appointment.doctorId.dept_id.name}
                         </td>
                         <td className="py-3 px-6">{appointment.appt_status}</td>
                         <td className="p-2" key={`upcoming-${appointment._id}`}>

@@ -181,7 +181,7 @@ const ReceptionistDashboard = () => {
                   center: "title",
                   end: "next",
                 }}
-                aspectRatio={2}
+                aspectRatio={1}
               />
             </div>
           </div>
@@ -201,25 +201,19 @@ const ReceptionistDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {availableDoctors.map((doctor) => (
-                    <tr key={doctor._id} className="border-b">
-                      <td className="py-2 text-center">
-                        {doctor && doctor.firstName && doctor.lastName
-                          ? `${doctor.firstName} ${doctor.lastName}`
-                          : "N/A"}
-                      </td>
-                      <td className="py-2 text-center">
-                        {doctor && doctor.specialization
-                          ? doctor.specialization
-                          : "N/A"}
-                      </td>
-                      <td className="py-2 text-center">
-                        {doctor && doctor.dept_id && doctor.dept_id.name
-                          ? doctor.dept_id.name
-                          : "N/A"}
-                      </td>
-                    </tr>
-                  ))}
+                {availableDoctors.map((doctor) => (
+  <tr key={doctor?._id} className="border-b">
+    <td className="py-2 text-center">
+      {doctor && doctor.firstName} {doctor && doctor.lastName}
+    </td>
+    <td className="py-2 text-center">
+      {doctor && doctor.specialization}
+    </td>
+    <td className="py-2 text-center">
+      {doctor && doctor.dept_id && doctor.dept_id.name}
+    </td>
+  </tr>
+))}
                 </tbody>
               </table>
             )}
