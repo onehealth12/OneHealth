@@ -22,16 +22,29 @@ const ReceptionistDashboard = () => {
     getAllAvailability();
   }, []);
 
-  // Get today's date in Singapore time
-  const singaporeTime = new Date().toLocaleString("en-US", {
-    timeZone: "Asia/Singapore",
-  });
-  const today = new Date(singaporeTime).toISOString().split("T")[0];
+  const today = new Date();
+  today.setHours(today.getHours()); // Adjust for Singapore time zone offset
+  const todayString =
+    today.getFullYear() +
+    "-" +
+    String(today.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(today.getDate()).padStart(2, "0");
+
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayString =
+    yesterday.getFullYear() +
+    "-" +
+    String(yesterday.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(yesterday.getDate()).padStart(2, "0");
 
   // Filter availabilities for today
   const todayAvailabilities = availabilities.filter(
     (availability) =>
-      availability.start.includes(today) || availability.end.includes(today)
+      availability.start.includes(yesterdayString) ||
+      availability.end.includes(yesterdayString)
   );
 
   // Get the list of available doctors
@@ -41,7 +54,7 @@ const ReceptionistDashboard = () => {
 
   // Filter appointments for today
   const todayAppointments = appointments.filter((appointment) =>
-    appointment.appointmentDateTime.includes(today)
+    appointment.appointmentDateTime.includes(todayString)
   );
 
   // Count checked-out patients
@@ -201,19 +214,19 @@ const ReceptionistDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {availableDoctors.map((doctor) => (
-  <tr key={doctor?._id} className="border-b">
-    <td className="py-2 text-center">
-      {doctor && doctor.firstName} {doctor && doctor.lastName}
-    </td>
-    <td className="py-2 text-center">
-      {doctor && doctor.specialization}
-    </td>
-    <td className="py-2 text-center">
-      {doctor && doctor.dept_id && doctor.dept_id.name}
-    </td>
-  </tr>
-))}
+                  {availableDoctors.map((doctor) => (
+                    <tr key={doctor?._id} className="border-b">
+                      <td className="py-2 text-center">
+                        {doctor && doctor.firstName} {doctor && doctor.lastName}
+                      </td>
+                      <td className="py-2 text-center">
+                        {doctor && doctor.specialization}
+                      </td>
+                      <td className="py-2 text-center">
+                        {doctor && doctor.dept_id && doctor.dept_id.name}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             )}
