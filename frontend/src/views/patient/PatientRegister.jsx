@@ -19,8 +19,8 @@ const PatientRegister = () => {
   const [city, setCity] = useState("");
   const [province, setProvince] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
+
   const payload = {
     firstName,
     lastName,
@@ -39,16 +39,26 @@ const PatientRegister = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-    .post("https://onehealth-backend.onrender.com/api/patient/register", {...payload})
-    .then(() => {
-      console.log("Register success")
-      navigate("/login");
-    })
-    .catch((err) => console.log("Error: " + err));
+      .post("https://onehealth-backend.onrender.com/api/patient/register", {
+        ...payload,
+      })
+      .then(() => {
+        console.log("Register success");
+        navigate("/login");
+      })
+      .catch((err) => console.log("Error: " + err));
+  };
+
+  const handleInput = (e, setter, maxLength) => {
+    const numericValue = e.target.value.replace(/[^0-9+]/g, "");
+
+    const limitedValue = numericValue.slice(0, maxLength);
+
+    setter(limitedValue);
   };
   return (
     <>
-      <Navbar userRole={userRole}/>
+      <Navbar userRole={userRole} />
       <div className="flex justify-center">
         <div className="lg:w-2/3">
           <form className="mt-4 p-2" onSubmit={handleSubmit}>
@@ -107,14 +117,14 @@ const PatientRegister = () => {
                 <input
                   type="text"
                   value={mobileNumber}
-                  onChange={(e) => setMobileNumber(e.target.value)}
+                  onChange={(e) => handleInput(e, setMobileNumber, 13)}
                   className="border-2 border-slate-300 rounded-full p-2 text-xs"
                   placeholder="Enter Mobile #"
                 />
                 <input
-                  type="text"
+                  type="tel"
                   value={landline}
-                  onChange={(e) => setLandline(e.target.value)}
+                  onChange={(e) => handleInput(e, setLandline, 13)}
                   className="border-2 border-slate-300 rounded-full p-2 text-xs"
                   placeholder="Enter Landline #"
                 />

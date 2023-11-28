@@ -21,7 +21,15 @@ const PatientProfile = () => {
   // Get token object
   const tokenObject = JSON.parse(localStorage.getItem("token"));
   // Get token string only
-  const token = tokenObject.token;
+  const token = tokenObject ? tokenObject.token : null;
+
+  useEffect(() => {
+    if (token === null) {
+      // Redirect to another page or handle the case when token is null
+      window.location = "/login"; // Replace "/login" with the desired redirect path
+    }
+  }, [token]);
+  
   const headerToken = {
     headers: {
       Authorization: `Bearer ${token}`,
