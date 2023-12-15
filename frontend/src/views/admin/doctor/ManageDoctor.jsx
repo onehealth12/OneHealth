@@ -22,7 +22,10 @@ const ManageDoctor = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/doctor/get", headerToken)
+      .get(
+        "https://onehealth-backend.onrender.com/api/admin/doctor/get",
+        headerToken
+      )
       .then((res) => {
         setDoctors(res.data);
       })
@@ -39,7 +42,10 @@ const ManageDoctor = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:5000/api/admin/doctor/${id}`, headerToken)
+      .delete(
+        `https://onehealth-backend.onrender.com/api/admin/doctor/${id}`,
+        headerToken
+      )
       .then((res) => {
         notify();
 

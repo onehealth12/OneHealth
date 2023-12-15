@@ -2,41 +2,41 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import { useStore } from "../../store";
 import io from "socket.io-client";
-const socket = io("http://localhost:5000"); 
-
+const socket = io("https://onehealth-backend.onrender.com");
 
 const NurseTracker = () => {
   const [userRole, setUserRole] = useState("nurse");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { appointments, getAllTodaysAppointments} =
-    useStore();
+  const { appointments, getAllTodaysAppointments } = useStore();
 
-    useEffect(() => {
-      const tokenObject = JSON.parse(localStorage.getItem("token"));
-      const token = tokenObject.token;
-      getAllTodaysAppointments(token);
-  
-      // Set up Socket.IO event listeners
-      socket.on("appointmentUpdated", (updatedAppointment) => {
-        // Handle the updated appointment, you might want to update the state or perform other actions
-        console.log("Appointment Updated:", updatedAppointment);
-        getAllTodaysAppointments(token); // Refresh appointments after an update
-      });
-  
-      // Clean up the Socket.IO event listener on component unmount
-      return () => {
-        socket.off("appointmentUpdated");
-      };
-    }, [getAllTodaysAppointments]);
+  useEffect(() => {
+    const tokenObject = JSON.parse(localStorage.getItem("token"));
+    const token = tokenObject.token;
+    getAllTodaysAppointments(token);
 
+    // Set up Socket.IO event listeners
+    socket.on("appointmentUpdated", (updatedAppointment) => {
+      // Handle the updated appointment, you might want to update the state or perform other actions
+      console.log("Appointment Updated:", updatedAppointment);
+      getAllTodaysAppointments(token); // Refresh appointments after an update
+    });
 
+    // Clean up the Socket.IO event listener on component unmount
+    return () => {
+      socket.off("appointmentUpdated");
+    };
+  }, [getAllTodaysAppointments]);
 
   // Filter appointments based on search query and exclude appointments with status 'Done'
-const filteredAppointments = appointments.filter(appointment =>
-  appointment.patientId.firstName.toLowerCase().includes(searchQuery.toLowerCase()) &&
-  appointment.appt_status !== "Done" && appointment.appt_status !== "Upcoming"
-);
+  const filteredAppointments = appointments.filter(
+    (appointment) =>
+      appointment.patientId.firstName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) &&
+      appointment.appt_status !== "Done" &&
+      appointment.appt_status !== "Upcoming"
+  );
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -74,15 +74,14 @@ const filteredAppointments = appointments.filter(appointment =>
               filteredAppointments.map((appointment) => (
                 <tr key={appointment._id} className="text-center">
                   <td className="p-2">
-                    {appointment.patientId.firstName} {appointment.patientId.lastName}
+                    {appointment.patientId.firstName}{" "}
+                    {appointment.patientId.lastName}
                   </td>
                   <td className="p-2">
                     {appointment.doctorId.firstName}{" "}
                     {appointment.doctorId.lastName}
                   </td>
-                  <td className="p-2">
-                    {appointment.appt_status}
-                  </td>
+                  <td className="p-2">{appointment.appt_status}</td>
                 </tr>
               ))
             )}

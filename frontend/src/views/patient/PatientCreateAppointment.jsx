@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./datepicker.css";
 import { setMinutes, setHours } from "date-fns";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const PatientCreateAppointment = () => {
@@ -25,14 +25,12 @@ const PatientCreateAppointment = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [minTime, setMinTime] = useState(null);
   const [maxTime, setMaxTime] = useState(null);
-    const [selectedDays, setSelectedDays] = useState([]);
+  const [selectedDays, setSelectedDays] = useState([]);
   const notify = () => {
-
     toast.success("Booked Successfully !", {
       position: toast.POSITION.TOP_CENTER,
       autoClose: 4500,
     });
-
   };
 
   const tokenObject = JSON.parse(localStorage.getItem("token"));
@@ -54,7 +52,7 @@ const PatientCreateAppointment = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/department/get")
+      .get("https://onehealth-backend.onrender.com/api/department/get")
       .then((res) => {
         setDepartments(res.data);
       })
@@ -65,7 +63,7 @@ const PatientCreateAppointment = () => {
     if (selectedDepartment) {
       axios
         .get(
-          `http://localhost:5000/api/doctor/department/${selectedDepartment}`
+          `https://onehealth-backend.onrender.com/api/doctor/department/${selectedDepartment}`
         )
         .then((res) => {
           setDoctors(res.data);
@@ -73,49 +71,52 @@ const PatientCreateAppointment = () => {
     }
   }, [selectedDepartment]);
 
-
-
-
   useEffect(() => {
     if (selectedDoctor) {
       axios
-        .get(`http://localhost:5000/api/doctor/availability/${selectedDoctor}`)
+        .get(
+          `https://onehealth-backend.onrender.com/api/doctor/availability/${selectedDoctor}`
+        )
         .then((res) => {
           setAvailabilities(res.data);
-          
+
           // Extract unique days from the response
-          const availableDays = [...new Set(res.data.flatMap(entry => entry.daysAvailability.map(day => day.day)))];
+          const availableDays = [
+            ...new Set(
+              res.data.flatMap((entry) =>
+                entry.daysAvailability.map((day) => day.day)
+              )
+            ),
+          ];
           setSelectedDays(availableDays);
-  
+
           // Find minTime and maxTime
           let minTime = "23:59";
           let maxTime = "00:00";
-  
-          res.data.forEach(entry => {
-            entry.daysAvailability.forEach(day => {
+
+          res.data.forEach((entry) => {
+            entry.daysAvailability.forEach((day) => {
               // Compare and update minTime
               if (day.startTime < minTime) {
                 minTime = day.startTime;
               }
-  
+
               // Compare and update maxTime
               if (day.endTime > maxTime) {
                 maxTime = day.endTime;
               }
             });
           });
-  
+
           // Set minTime and maxTime in the state
           setMinTime(new Date(`2000/01/01 ${minTime}`));
           setMaxTime(new Date(`2000/01/01 ${maxTime}`));
-  
         })
-        .catch((err) => console.log("Error fetching doctor availability: " + err));
+        .catch((err) =>
+          console.log("Error fetching doctor availability: " + err)
+        );
     }
   }, [selectedDoctor]);
-  
-
-
 
   const handleDateChange = (date) => {
     const selectedDate = new Date(date);
@@ -149,35 +150,42 @@ const PatientCreateAppointment = () => {
 
     axios
       .post(
-        "http://localhost:5000/api/patient/appointment/create",
+        "https://onehealth-backend.onrender.com/api/patient/appointment/create",
         appointment,
         headerToken
       )
       .then((res) => {
         setSelectedDoctor("");
         setAppointmentDateTime("");
-        notify()
+        notify();
 
         setTimeout(() => {
           window.location = "/";
         }, 5000);
-        
       })
       .catch((err) => console.log("Error: " + err));
   };
 
-
   const getFutureDatesForDay = (day) => {
     const today = new Date();
     const currentDayIndex = today.getDay();
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const daysOfWeek = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
     const dayIndex = daysOfWeek.indexOf(day);
-    
+
     let daysToAdd = dayIndex - currentDayIndex;
     if (daysToAdd < 0) daysToAdd += 7; // If the day is in the past, add 7 to get the next occurrence
-    
+
     const futureDates = [];
-    for (let i = 0; i < 4; i++) { // Adjust the loop limit as needed
+    for (let i = 0; i < 4; i++) {
+      // Adjust the loop limit as needed
       const date = new Date(today);
       date.setDate(today.getDate() + daysToAdd + 7 * i);
       futureDates.push(date);
@@ -186,12 +194,11 @@ const PatientCreateAppointment = () => {
     return futureDates;
   };
 
-  
   return (
     <>
-      <Navbar userRole={userRole}/>
+      <Navbar userRole={userRole} />
       <div className="flex justify-center items-center ">
-        <ToastContainer/>
+        <ToastContainer />
         <div className=" p-6 md:w-4/5">
           <h1 className="text-3xl font-semibold mb-4 text-center text-[#4867D6]">
             Book an Appointment

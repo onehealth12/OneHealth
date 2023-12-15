@@ -24,7 +24,7 @@ const Navbar = ({ userRole }) => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/patient/logout",
+        "https://onehealth-backend.onrender.com/api/patient/logout",
         null
       );
 
@@ -51,11 +51,11 @@ const Navbar = ({ userRole }) => {
       <img src={logo} width="200px" />
       <div className="w-1/3">
         <ul className="hidden md:flex md:justify-end gap-x-4 font-semibold">
-          {userRole === 'patient' && <PatientNavigation/>}
-          {userRole === 'doctor' && <DoctorNavigation/>}
-          {userRole === 'nurse' && <NurseNavigation/>}
-          {userRole === 'medTech' && <MedTechNavigation/>}
-          {userRole === 'radTech' && <RadTechNavigation/>}
+          {userRole === "patient" && <PatientNavigation />}
+          {userRole === "doctor" && <DoctorNavigation />}
+          {userRole === "nurse" && <NurseNavigation />}
+          {userRole === "medTech" && <MedTechNavigation />}
+          {userRole === "radTech" && <RadTechNavigation />}
         </ul>
       </div>
 

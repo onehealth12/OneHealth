@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Sidebar from "../../../components/Sidebar";
-import axios from 'axios'
+import axios from "axios";
 const CreatePatient = () => {
   const [userRole, setUserRole] = useState("receptionist");
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [mobileNumber, setMobileNumber] = useState('')
-  const [password, setPassword] = useState('')
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [password, setPassword] = useState("");
 
   const tokenObject = JSON.parse(localStorage.getItem("token"));
   //Get token string only
@@ -26,26 +26,29 @@ const CreatePatient = () => {
       lastName,
       email,
       mobileNumber,
-      password
-    }
+      password,
+    };
 
-    axios.post('http://localhost:5000/api/receptionist/patient/register', payload)
-          .then((res) => {
-            setFirstName('')
-            setLastName('')
-            setEmail('')
-            setMobileNumber('')
-            setPassword('')
-            location.reload()
-            
-          })
-          .catch((err) => console.log('Error: '+ err))
-          console.log(payload)
+    axios
+      .post(
+        "https://onehealth-backend.onrender.com/api/receptionist/patient/register",
+        payload
+      )
+      .then((res) => {
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setMobileNumber("");
+        setPassword("");
+        location.reload();
+      })
+      .catch((err) => console.log("Error: " + err));
+    console.log(payload);
   };
   return (
-<>
+    <>
       <div className="w-screen flex">
-      <Sidebar userRole={userRole}/>
+        <Sidebar userRole={userRole} />
         <div className="w-full">
           <h1 className="mt-8 font-bold text-center">Create Patient Account</h1>
           <div className="max-w-md mx-auto">
@@ -151,7 +154,7 @@ const CreatePatient = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CreatePatient
+export default CreatePatient;

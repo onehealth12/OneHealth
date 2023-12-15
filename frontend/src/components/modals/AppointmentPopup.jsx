@@ -10,7 +10,7 @@ const AppointmentPopup = ({ appointmentId, onClose, role }) => {
     const fetchAppointmentInfo = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/doctor/appointment/spec/${appointmentId}`
+          `https://onehealth-backend.onrender.com/api/doctor/appointment/spec/${appointmentId}`
         );
         const appointmentData = response.data;
 

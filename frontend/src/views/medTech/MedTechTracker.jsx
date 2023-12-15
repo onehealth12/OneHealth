@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import { useStore } from "../../store";
 import UploadFile from "../../components/modals/UploadFile";
 import io from "socket.io-client";
-const socket = io("http://localhost:5000");
+const socket = io("https://onehealth-backend.onrender.com");
 import { GrLinkNext } from "react-icons/gr";
 
 const MedTechTracker = () => {
@@ -13,8 +13,7 @@ const MedTechTracker = () => {
   const handleClose = () => setShowUpload(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { appointments, getAllTodaysAppointments } =
-    useStore();
+  const { appointments, getAllTodaysAppointments } = useStore();
 
   useEffect(() => {
     const tokenObject = JSON.parse(localStorage.getItem("token"));
@@ -33,10 +32,6 @@ const MedTechTracker = () => {
       socket.off("appointmentUpdated");
     };
   }, [getAllTodaysAppointments]);
-
-
-
-
 
   // Filter appointments based on search query and exclude appointments with status 'Done'
   const filteredAppointments = appointments.filter(
@@ -107,13 +102,13 @@ const MedTechTracker = () => {
                           Lab Result
                         </button>
                         <UploadFile
-                              id={selectedAppointmentId}
-                              visible={showUpload}
-                              onClose={() => {
-                                setSelectedAppointmentId(null);
-                                setShowUpload(false);
-                              }}
-                            />
+                          id={selectedAppointmentId}
+                          visible={showUpload}
+                          onClose={() => {
+                            setSelectedAppointmentId(null);
+                            setShowUpload(false);
+                          }}
+                        />
                       </div>
                     )}
                   </td>

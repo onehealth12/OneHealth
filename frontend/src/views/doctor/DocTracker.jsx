@@ -7,7 +7,7 @@ import { GrLinkNext } from "react-icons/gr";
 import io from "socket.io-client";
 import axios from "axios";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://onehealth-backend.onrender.com");
 
 const DocTracker = () => {
   const [userRole, setUserRole] = useState("doctor");
@@ -20,7 +20,7 @@ const DocTracker = () => {
   const { appointments, getTodaysAppointments, updateAppointmentStatus } =
     useStore();
   const [searchQuery, setSearchQuery] = useState("");
-  const [info, setInfo] = useState([])
+  const [info, setInfo] = useState([]);
   const tokenObject = JSON.parse(localStorage.getItem("token"));
   const token = tokenObject.token;
 
@@ -30,14 +30,15 @@ const DocTracker = () => {
     },
   };
   useEffect(() => {
-    axios.get("http://localhost:5000/api/doctor/get", headerToken)
-    .then((res) => {
-      setInfo(res.data)
-    })
-    .catch((err) => console.log("Error: ") + err)
+    axios
+      .get("https://onehealth-backend.onrender.com/api/doctor/get", headerToken)
+      .then((res) => {
+        setInfo(res.data);
+      })
+      .catch((err) => console.log("Error: ") + err);
 
     getTodaysAppointments(token);
-    
+
     // Set up Socket.IO event listeners
     socket.on("appointmentUpdated", (updatedAppointment) => {
       // Handle the updated appointment, you might want to update the state or perform other actions
@@ -102,9 +103,9 @@ const DocTracker = () => {
                   </td>
                   <td>{appointment.appt_status}</td>
                   <td>
-                    {appointment.appt_status === `Consultation with Dr. ${info.firstName} ${info.lastName}` && (
+                    {appointment.appt_status ===
+                      `Consultation with Dr. ${info.firstName} ${info.lastName}` && (
                       <div>
-
                         <button
                           className="bg-blue-500 text-white px-3 py-1 rounded-md mx-1"
                           onClick={() => {

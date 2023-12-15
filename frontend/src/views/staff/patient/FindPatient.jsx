@@ -12,7 +12,7 @@ const FindPatient = () => {
     setIsLoading(true);
     try {
       const response = await Axios.get(
-        `http://localhost:5000/api/receptionist/patient/search?q=${searchTerm}`
+        `https://onehealth-backend.onrender.com/api/receptionist/patient/search?q=${searchTerm}`
       );
       setSearchResults(response.data);
     } catch (error) {
@@ -31,7 +31,9 @@ const FindPatient = () => {
       <Sidebar userRole={userRole} />
       <div className="w-full ml-8">
         <div className="flex flex-col items-center">
-          <h1 className="text-center text-3xl font-bold mb-4">Patient Search</h1>
+          <h1 className="text-center text-3xl font-bold mb-4">
+            Patient Search
+          </h1>
           <div className="flex items-center mb-4">
             <input
               type="text"
@@ -81,11 +83,7 @@ const FindPatient = () => {
           </div>
         ) : (
           <div className="mt-8 text-center text-gray-500">
-            {isLoading ? (
-              <p>Loading...</p>
-            ) : (
-              <p>No results found.</p>
-            )}
+            {isLoading ? <p>Loading...</p> : <p>No results found.</p>}
           </div>
         )}
       </div>

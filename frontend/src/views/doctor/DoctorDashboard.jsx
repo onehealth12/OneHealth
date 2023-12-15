@@ -8,7 +8,7 @@ import { PieChart, Pie, Tooltip } from "recharts";
 import io from "socket.io-client";
 
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
-const socket = io("http://localhost:5000");
+const socket = io("https://onehealth-backend.onrender.com");
 const DoctorDashboard = () => {
   const [userRole, setUserRole] = useState("doctor");
   const { appointments, getAllTimeAppointments } = useStore();

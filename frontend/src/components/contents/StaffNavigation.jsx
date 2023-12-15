@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const StaffNavigation = () => {
   const [showPatientMenu, setShowPatientMenu] = useState(false);
   const [showAppointmentsMenu, setShowAppointmentsMenu] = useState(false);
@@ -18,7 +18,7 @@ const StaffNavigation = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/receptionist/logout",
+        "https://onehealth-backend.onrender.com/api/receptionist/logout",
         null
       );
 

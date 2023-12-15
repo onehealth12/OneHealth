@@ -3,16 +3,16 @@ import { useStore } from "../../store";
 import axios from "axios";
 
 const Diagnose = ({ visible, onClose, id, token }) => {
-  const [doctor, setDoctor] = useState([])
+  const [doctor, setDoctor] = useState([]);
   const { addDiagnosis } = useStore();
-  const [diagnoses, setDiagnoses] = useState([])
+  const [diagnoses, setDiagnoses] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedDiagnosis, setSelectedDiagnosis] = useState("");
   const [diagnosisNotes, setDiagnosisNotes] = useState("");
   // DOCTOR API
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/doctor/get", token)
+      .get("https://onehealth-backend.onrender.com/api/doctor/get", token)
       .then((res) => {
         setDoctor(res.data);
 
@@ -25,7 +25,9 @@ const Diagnose = ({ visible, onClose, id, token }) => {
         // Fetch diagnoses based on the selected department
         if (deptId) {
           axios
-            .get(`http://localhost:5000/api/doctor/diagnosis/${deptId}`)
+            .get(
+              `https://onehealth-backend.onrender.com/api/doctor/diagnosis/${deptId}`
+            )
             .then((res) => {
               setDiagnoses(res.data);
             });
@@ -34,7 +36,6 @@ const Diagnose = ({ visible, onClose, id, token }) => {
       .catch((err) => console.error("Error: " + err));
   }, [token]);
 
-  
   const handleUpdate = () => {
     addDiagnosis(id, selectedDiagnosis, diagnosisNotes);
     onClose();
@@ -69,7 +70,6 @@ const Diagnose = ({ visible, onClose, id, token }) => {
           <h2 className="text-2xl font-semibold">Patient's Diagnosis</h2>
         </div>
         <div className="modal-content p-4">
-
           <label className="block mt-4">Diagnosis Name</label>
           <select
             className="bg-[#ccd6f6] p-2 focus:outline-none text-black"
@@ -77,17 +77,18 @@ const Diagnose = ({ visible, onClose, id, token }) => {
           >
             <option value="">Select Name</option>
             {diagnoses.map((diag) => (
-              <option key={diag._id} value={diag._id}>{diag.name}</option>
+              <option key={diag._id} value={diag._id}>
+                {diag.name}
+              </option>
             ))}
           </select>
           <label className="block mt-4">Diagnosis Notes</label>
           <textarea
             className="bg-[#ccd6f6] p-2 focus:outline-none text-black resize-none"
-            onChange={(e) => setDiagnosisNotes(e.target.value)
-            }
+            onChange={(e) => setDiagnosisNotes(e.target.value)}
             value={diagnosisNotes}
-            cols={30}   
-            rows={5}   
+            cols={30}
+            rows={5}
           />
         </div>
         <div className="modal-footer bg-gray-100 p-4 rounded-b-lg flex justify-end">

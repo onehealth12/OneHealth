@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/Sidebar";
 import axios from "axios";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const AddDoctor = () => {
@@ -14,7 +14,7 @@ const AddDoctor = () => {
   const [licenseNumber, setLicenseNumber] = useState("");
   const [departments, setDepartments] = useState([]);
   const [departmentName, setDepartmentName] = useState("");
-  const [signature, setSignature] = useState([])
+  const [signature, setSignature] = useState([]);
 
   const tokenObject = JSON.parse(localStorage.getItem("token"));
   const token = tokenObject.token;
@@ -25,12 +25,11 @@ const AddDoctor = () => {
     },
   };
   const notify = () => {
-
     toast.success("Created Successfully !", {
       position: toast.POSITION.TOP_CENTER,
       autoClose: 4500,
     });
-    console.log('Notify')
+    console.log("Notify");
   };
 
   const handleSubmit = (e) => {
@@ -44,11 +43,11 @@ const AddDoctor = () => {
       specialization,
       licenseNumber,
       departmentName,
-      signature
+      signature,
     };
     axios
       .post(
-        "http://localhost:5000/api/admin/doctor/create",
+        "https://onehealth-backend.onrender.com/api/admin/doctor/create",
         payload,
         headerToken
       )
@@ -60,11 +59,11 @@ const AddDoctor = () => {
         setSpecialization("");
         setLicenseNumber("");
         setDepartmentName("");
-        setSignature('')
-        notify()
-        
+        setSignature("");
+        notify();
+
         setTimeout(() => {
-          location.reload()
+          location.reload();
         }, 5000);
       })
       .catch((err) => console.log("Error: " + err));
@@ -72,38 +71,38 @@ const AddDoctor = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/department/get")
+      .get("https://onehealth-backend.onrender.com/api/department/get")
       .then((res) => {
         setDepartments(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
-    //handle and convert it in base 64
-    const handleSignature = (e) => {
-      const file = e.target.files[0];
-      setFileToBase(file);
-      console.log("handleSignature: ",file);
+  //handle and convert it in base 64
+  const handleSignature = (e) => {
+    const file = e.target.files[0];
+    setFileToBase(file);
+    console.log("handleSignature: ", file);
+  };
+
+  const setFileToBase = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setSignature(reader.result);
+      console.log("setFileToBase: ", reader.result);
     };
-  
-    const setFileToBase = (file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setSignature(reader.result);
-        console.log("setFileToBase: ", reader.result);
-      };
-    };
+  };
   return (
     <>
       <div className="w-screen flex">
-      <ToastContainer/>
+        <ToastContainer />
         <Sidebar userRole={userRole} />
         <div className="w-full">
           <h1 className="mt-8 font-bold text-center">Add New Doctor</h1>
           <div className="max-w-md mx-auto">
             <form
-            encType="multipart/form-data"
+              encType="multipart/form-data"
               className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
               onSubmit={handleSubmit}
             >
@@ -214,7 +213,11 @@ const AddDoctor = () => {
                   <label className="block text-gray-700 text-sm font-bold mb-2">
                     Upload Signature
                   </label>
-                  <input onChange={handleSignature}  type="file" name="signature"/>
+                  <input
+                    onChange={handleSignature}
+                    type="file"
+                    name="signature"
+                  />
                 </div>
               </div>
               <div className="text-center">

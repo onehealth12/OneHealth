@@ -5,8 +5,7 @@ import axios from "axios";
 const Department = () => {
   const [userRole, setUserRole] = useState("admin");
   const [departments, setDepartments] = useState([]);
-  const [name, setName] = useState('')
-
+  const [name, setName] = useState("");
 
   const tokenObject = JSON.parse(localStorage.getItem("token"));
   //Get token string only
@@ -19,7 +18,10 @@ const Department = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/department/get", headerToken)
+      .get(
+        "https://onehealth-backend.onrender.com/api/admin/department/get",
+        headerToken
+      )
       .then((res) => {
         setDepartments(res.data);
       })
@@ -27,31 +29,44 @@ const Department = () => {
   }, []);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    axios.post('http://localhost:5000/api/admin/department/create', {name}, headerToken)
-          .then((res) => {
-            setName('')
-            console.log(res.data)
-            window.location.reload()
-          })
-          .catch((err) => console.log(err))
-  }
+    e.preventDefault();
+    axios
+      .post(
+        "https://onehealth-backend.onrender.com/api/admin/department/create",
+        { name },
+        headerToken
+      )
+      .then((res) => {
+        setName("");
+        console.log(res.data);
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
+  };
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:5000/api/admin/department/${id}`, headerToken)
-          .then((res) => {
-            window.location.reload()
-          })
-          .catch((err) => console.log(err))
-  }
+    axios
+      .delete(
+        `https://onehealth-backend.onrender.com/api/admin/department/${id}`,
+        headerToken
+      )
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
+  };
 
   const handleUpdate = (id) => {
-    axios.delete(`http://localhost:5000/api/admin/department/${id}`, headerToken)
-          .then((res) => {
-            window.location.reload()
-          })
-          .catch((err) => console.log(err))
-  }
+    axios
+      .delete(
+        `https://onehealth-backend.onrender.com/api/admin/department/${id}`,
+        headerToken
+      )
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <div className="flex w-screen">
@@ -93,10 +108,17 @@ const Department = () => {
                   ) : (
                     departments.map((department) => (
                       <tr key={department._id}>
-                        <td className="border  text-center p-2">DEPT - {department._id}</td>
-                        <td className="border  text-center p-2">{department.name}</td>
                         <td className="border  text-center p-2">
-                          <button className="px-4 py-2 bg-red-500 text-white rounded" onClick={() => handleDelete(department._id)}>
+                          DEPT - {department._id}
+                        </td>
+                        <td className="border  text-center p-2">
+                          {department.name}
+                        </td>
+                        <td className="border  text-center p-2">
+                          <button
+                            className="px-4 py-2 bg-red-500 text-white rounded"
+                            onClick={() => handleDelete(department._id)}
+                          >
                             Delete
                           </button>
                         </td>

@@ -16,7 +16,10 @@ const DoctorInformation = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/receptionist/doctor/get", headerToken)
+      .get(
+        "https://onehealth-backend.onrender.com/api/receptionist/doctor/get",
+        headerToken
+      )
       .then((res) => {
         setDoctors(res.data);
       });
@@ -48,17 +51,23 @@ const DoctorInformation = () => {
                     <tr>
                       <td>No data available</td>
                     </tr>
-                  ) : (doctors.map((doctor) => (
-                    <tr key={doctor._id}>
-                    <td className="border  text-center p-2">{doctor.firstName} {doctor.lastName}</td>
-                    <td className="border  text-center p-2">{doctor.dept_id.name}</td>
-                    <td className="border  text-center p-2">
-                      {doctor.specialization}
-                    </td>
-                    <td className="border  text-center p-2">123 Street</td>
-                    <td className="border  text-center p-2">515-6322</td>
-                  </tr>
-                  )))}
+                  ) : (
+                    doctors.map((doctor) => (
+                      <tr key={doctor._id}>
+                        <td className="border  text-center p-2">
+                          {doctor.firstName} {doctor.lastName}
+                        </td>
+                        <td className="border  text-center p-2">
+                          {doctor.dept_id.name}
+                        </td>
+                        <td className="border  text-center p-2">
+                          {doctor.specialization}
+                        </td>
+                        <td className="border  text-center p-2">123 Street</td>
+                        <td className="border  text-center p-2">515-6322</td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>

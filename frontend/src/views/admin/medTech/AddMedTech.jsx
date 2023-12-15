@@ -9,34 +9,32 @@ const AddMedTech = () => {
   const [password, setPassword] = useState("");
   const [licenseNumber, setLicenseNumber] = useState("");
 
-  
-      //Get token object
-      const tokenObject = JSON.parse(localStorage.getItem("token"));
+  //Get token object
+  const tokenObject = JSON.parse(localStorage.getItem("token"));
 
-      //Get token string only
-    
-      const token = tokenObject.token;
-      const username = tokenObject.name;
-    
-      const headerToken = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+  //Get token string only
+
+  const token = tokenObject.token;
+  const username = tokenObject.name;
+
+  const headerToken = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-
 
     const payload = {
       firstName,
       lastName,
       email,
       password,
-      licenseNumber
-    }
+      licenseNumber,
+    };
     axios
       .post(
-        "http://localhost:5000/api/admin/medTech/create",
+        "https://onehealth-backend.onrender.com/api/admin/medTech/create",
         payload,
         headerToken
       )
@@ -46,10 +44,10 @@ const AddMedTech = () => {
         setEmail("");
         setPassword("");
         setLicenseNumber("");
-        window.location.reload()
+        window.location.reload();
       })
       .catch((err) => console.log("Error: " + err));
-      console.log(payload)
+    console.log(payload);
   };
   return (
     <>

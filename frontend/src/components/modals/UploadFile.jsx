@@ -11,12 +11,12 @@ const UploadFile = ({ visible, onClose, id }) => {
   const handleLabFiles = (e) => {
     const files = e.target.files;
     const filesArray = [];
-  
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-  
+
       // Check if the file type is either an image or PDF
-      if (file.type.startsWith('image/') || file.type === 'application/pdf') {
+      if (file.type.startsWith("image/") || file.type === "application/pdf") {
         setFileToBase(file);
         filesArray.push(file);
       } else {
@@ -24,10 +24,9 @@ const UploadFile = ({ visible, onClose, id }) => {
         console.log(`Invalid file type: ${file.type}`);
       }
     }
-  
+
     console.log("handleLabFiles: ", filesArray, id);
   };
-  
 
   // set files to base64
   const setFileToBase = (file) => {
@@ -45,7 +44,7 @@ const UploadFile = ({ visible, onClose, id }) => {
     try {
       // Use axios to send an array of files
       const { data } = await axios.post(
-        "http://localhost:5000/api/medTech/appointment/labresult/create/",
+        "https://onehealth-backend.onrender.com/api/medTech/appointment/labresult/create/",
         { appointmentId: id, labFiles }
       );
 
@@ -92,7 +91,12 @@ const UploadFile = ({ visible, onClose, id }) => {
           </div>
 
           <div className="modal-content p-4">
-          <input onChange={handleLabFiles} type="file" name="labFiles" multiple />
+            <input
+              onChange={handleLabFiles}
+              type="file"
+              name="labFiles"
+              multiple
+            />
           </div>
 
           <div className="modal-footer bg-gray-100 p-4 rounded-b-lg flex justify-end">

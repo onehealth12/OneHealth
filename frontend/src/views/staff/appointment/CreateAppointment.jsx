@@ -37,7 +37,7 @@ const CreateAppointment = () => {
   };
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/department/get")
+      .get("https://onehealth-backend.onrender.com/api/department/get")
       .then((res) => {
         setDepartments(res.data);
       })
@@ -48,7 +48,7 @@ const CreateAppointment = () => {
     if (selectedDepartment) {
       axios
         .get(
-          `http://localhost:5000/api/doctor/department/${selectedDepartment}`
+          `https://onehealth-backend.onrender.com/api/doctor/department/${selectedDepartment}`
         )
         .then((res) => {
           setDoctors(res.data);
@@ -59,7 +59,9 @@ const CreateAppointment = () => {
   useEffect(() => {
     if (selectedDoctor) {
       axios
-        .get(`http://localhost:5000/api/doctor/availability/${selectedDoctor}`)
+        .get(
+          `https://onehealth-backend.onrender.com/api/doctor/availability/${selectedDoctor}`
+        )
         .then((res) => {
           // console.log(selectedDoctor);
           setAvailabilities(res.data);
@@ -80,7 +82,7 @@ const CreateAppointment = () => {
             date <= endDate;
             date.setDate(date.getDate())
           ) {
-            dates.push(new Date(date.setDate(date.getDate() + 1)));  // Create a new Date object to avoid reference issues
+            dates.push(new Date(date.setDate(date.getDate() + 1))); // Create a new Date object to avoid reference issues
           }
           return dates;
         })
@@ -121,7 +123,7 @@ const CreateAppointment = () => {
 
     axios
       .post(
-        "http://localhost:5000/api/receptionist/appointment/create",
+        "https://onehealth-backend.onrender.com/api/receptionist/appointment/create",
         payload
       )
       .then((res) => {
@@ -135,7 +137,7 @@ const CreateAppointment = () => {
         // console.log(appointment);
         window.location = "/";
       })
-      .catch((err) => console.log("Error: " + err))
+      .catch((err) => console.log("Error: " + err));
 
     console.log(payload);
   };

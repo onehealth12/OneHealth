@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/Sidebar";
-import axios from 'axios';
+import axios from "axios";
 const Staff = () => {
-  const [userRole, setUserRole] = useState('admin');
-  const [receptionists, setReceptionists] = useState([])
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [userRole, setUserRole] = useState("admin");
+  const [receptionists, setReceptionists] = useState([]);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   //Get token object
   const tokenObject = JSON.parse(localStorage.getItem("token"));
@@ -24,13 +24,15 @@ const Staff = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/receptionist/get", headerToken)
+      .get(
+        "https://onehealth-backend.onrender.com/api/admin/receptionist/get",
+        headerToken
+      )
       .then((res) => {
         setReceptionists(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -39,23 +41,30 @@ const Staff = () => {
       firstName,
       lastName,
       email,
-      password
-    }
-    axios.post('http://localhost:5000/api/admin/receptionist/create', payload, headerToken)
-          .then((res) => {
-            setFirstName('')
-            setLastName('')
-            setEmail('')
-            setPassword('')
-            window.location.reload()
-          })
-          .catch((err) => console.log('Error: ') + err)
-
+      password,
+    };
+    axios
+      .post(
+        "https://onehealth-backend.onrender.com/api/admin/receptionist/create",
+        payload,
+        headerToken
+      )
+      .then((res) => {
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+        window.location.reload();
+      })
+      .catch((err) => console.log("Error: ") + err);
   };
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:5000/api/admin/receptionist/${id}`, headerToken)
+      .delete(
+        `https://onehealth-backend.onrender.com/api/admin/receptionist/${id}`,
+        headerToken
+      )
       .then((res) => {
         window.location.reload();
       })
@@ -63,8 +72,8 @@ const Staff = () => {
   };
   return (
     <>
-    <div className='flex'>
-    <Sidebar userRole={userRole}/>
+      <div className="flex">
+        <Sidebar userRole={userRole} />
         <div className="w-full">
           <h1 className="mt-8 font-bold text-center">Add New Staff</h1>
           <div className="max-w-md mx-auto">
@@ -88,10 +97,7 @@ const Staff = () => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    
-                  >
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
                     Last Name
                   </label>
                   <input
@@ -102,10 +108,7 @@ const Staff = () => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    
-                  >
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
                     Email
                   </label>
                   <input
@@ -116,10 +119,7 @@ const Staff = () => {
                   />
                 </div>
                 <div className="mb-4">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                   
-                  >
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
                     Retype Password
                   </label>
                   <input
@@ -127,7 +127,6 @@ const Staff = () => {
                     type="password"
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter Password"
-                    
                   />
                 </div>
               </div>
@@ -141,44 +140,55 @@ const Staff = () => {
               </div>
             </form>
           </div>
-          <div className='mt-16'>
-            <h2 className='ml-4'>List of Staff</h2>
-          <table className="w-full border">
-                <thead>
-                  <tr className="bg-[#4867D6] text-white">
-                    <th className="border p-2">Staff ID</th>
-                    <th className="border p-2">Staff Name</th>
-                    <th className="border p-2">Email</th>
-                    <th className="border p-2">Action</th>
+          <div className="mt-16">
+            <h2 className="ml-4">List of Staff</h2>
+            <table className="w-full border">
+              <thead>
+                <tr className="bg-[#4867D6] text-white">
+                  <th className="border p-2">Staff ID</th>
+                  <th className="border p-2">Staff Name</th>
+                  <th className="border p-2">Email</th>
+                  <th className="border p-2">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {receptionists.length === 0 ? (
+                  <tr>
+                    <td>No data available</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {receptionists.length === 0 ? (
-                    <tr>
-                      <td>No data available</td>
-                    </tr>
-                  ):(receptionists.map((receptionist) => (
+                ) : (
+                  receptionists.map((receptionist) => (
                     <tr key={receptionist._id}>
-                    <td className="border  text-center p-2">{receptionist._id}</td>
-                    <td className="border  text-center p-2">{receptionist.firstName} {receptionist.lastName}</td>
-                    <td className="border  text-center p-2">{receptionist.email}</td>
-                    <td className="border  text-center p-2">
-                      <button className="px-4 py-2 bg-blue-500 text-white rounded mr-2">
-                        Edit
-                      </button>
-                      <button className="px-4 py-2 bg-red-500 text-white rounded" onClick={() => handleDelete(receptionist._id)}>
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                  )))}
-                </tbody>
-              </table>
+                      <td className="border  text-center p-2">
+                        {receptionist._id}
+                      </td>
+                      <td className="border  text-center p-2">
+                        {receptionist.firstName} {receptionist.lastName}
+                      </td>
+                      <td className="border  text-center p-2">
+                        {receptionist.email}
+                      </td>
+                      <td className="border  text-center p-2">
+                        <button className="px-4 py-2 bg-blue-500 text-white rounded mr-2">
+                          Edit
+                        </button>
+                        <button
+                          className="px-4 py-2 bg-red-500 text-white rounded"
+                          onClick={() => handleDelete(receptionist._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
-    </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Staff
+export default Staff;

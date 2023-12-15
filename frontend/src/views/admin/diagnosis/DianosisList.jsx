@@ -19,7 +19,10 @@ const DiagnosisList = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/department/get", headerToken)
+      .get(
+        "https://onehealth-backend.onrender.com/api/admin/department/get",
+        headerToken
+      )
       .then((res) => {
         setDepartments(res.data);
       })
@@ -32,7 +35,7 @@ const DiagnosisList = () => {
     try {
       // Make a POST request to your backend API to create a diagnosis
       const response = await axios.post(
-        "http://localhost:5000/api/admin/diagnosis/create",
+        "https://onehealth-backend.onrender.com/api/admin/diagnosis/create",
         {
           diagnosis: {
             name,

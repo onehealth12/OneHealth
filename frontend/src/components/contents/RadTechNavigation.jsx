@@ -6,7 +6,7 @@ const RadTechNavigation = () => {
 
   const handleLogout = async () => {
     axios
-      .post("http://localhost:5000/api/radTech/logout", null)
+      .post("https://onehealth-backend.onrender.com/api/radTech/logout", null)
       .then((res) => {
         localStorage.removeItem("token");
         navigate("/hospital/auth/login");

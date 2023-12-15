@@ -4,7 +4,7 @@ import { usePatientStore } from "../../store";
 import AppointmentList from "./AppointmentList";
 import AppointmentDetails from "./AppointmentDetails";
 import io from "socket.io-client";
-const socket = io("http://localhost:5000");
+const socket = io("https://onehealth-backend.onrender.com");
 
 const PatientDashboard = () => {
   const [userRole, setUserRole] = useState("patient");
@@ -27,7 +27,7 @@ const PatientDashboard = () => {
 
   useEffect(() => {
     getAppointments(token);
-    
+
     socket.on("patientRealTimeAppointments", (updatedAppointment) => {
       // Handle the updated appointment, you might want to update the state or perform other actions
       getAppointments(token); // Refresh appointments after an update
@@ -37,8 +37,6 @@ const PatientDashboard = () => {
       socket.off("patientRealTimeAppointments");
     };
   }, []);
-
-
 
   const handleAppointmentClick = (appointment) => {
     setSelectedAppointment(appointment);
@@ -53,8 +51,11 @@ const PatientDashboard = () => {
         </h1>
       </header>
       <section className="pt-10 px-4 grid grid-cols-1 md:grid-cols-2 md:gap-x-2">
-        <AppointmentList appointments={appointments} onAppointmentClick={handleAppointmentClick}/>
-        <AppointmentDetails  selectedAppointment={selectedAppointment}/>
+        <AppointmentList
+          appointments={appointments}
+          onAppointmentClick={handleAppointmentClick}
+        />
+        <AppointmentDetails selectedAppointment={selectedAppointment} />
       </section>
     </>
   );

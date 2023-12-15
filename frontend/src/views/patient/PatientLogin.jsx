@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PatientLogin = () => {
   const [userRole, setUserRole] = useState("patient");
@@ -13,9 +13,12 @@ const PatientLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     axios
-      .post("http://localhost:5000/api/patient/login", { loginIdentifier, password })
+      .post("https://onehealth-backend.onrender.com/api/patient/login", {
+        loginIdentifier,
+        password,
+      })
       .then((res) => {
         localStorage.setItem("token", JSON.stringify(res.data));
         console.log("Logged in successfully");
@@ -42,19 +45,20 @@ const PatientLogin = () => {
         }
       });
   };
-  
 
   return (
     <>
       <div className="h-screen">
-        <ToastContainer position="bottom-right"/>
+        <ToastContainer position="bottom-right" />
         <Navbar userRole={userRole} />
         <div className="flex justify-center items-center">
           <form
             className="absolute top-1/4  shadow-2xl p-8 space-y-4 rounded-lg bg-slate-200"
             onSubmit={handleSubmit}
           >
-            <h1 className="text-center font-bold text-2xl text-[#4867d6]">Login</h1>
+            <h1 className="text-center font-bold text-2xl text-[#4867d6]">
+              Login
+            </h1>
             <div>
               <label className="block ml-2">Email or Mobile Number</label>
               <input
@@ -85,8 +89,9 @@ const PatientLogin = () => {
               Submit
             </button>
             <p>
-              Don't have an account? Register <a href="/register" className="text-[#4867D6]">
-                 here
+              Don't have an account? Register{" "}
+              <a href="/register" className="text-[#4867D6]">
+                here
               </a>
             </p>
           </form>

@@ -6,7 +6,7 @@ const MedTechNavigation = () => {
 
   const handleLogout = async () => {
     axios
-      .post("http://localhost:5000/api/medTech/logout", null)
+      .post("https://onehealth-backend.onrender.com/api/medTech/logout", null)
       .then((res) => {
         localStorage.removeItem("token");
         navigate("/hospital/auth/login");

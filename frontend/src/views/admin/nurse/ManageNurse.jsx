@@ -22,7 +22,10 @@ const ManageNurse = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/nurse/get", headerToken)
+      .get(
+        "https://onehealth-backend.onrender.com/api/admin/nurse/get",
+        headerToken
+      )
       .then((res) => {
         setNurses(res.data);
       })
@@ -31,7 +34,10 @@ const ManageNurse = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:5000/api/admin/nurse/${id}`, headerToken)
+      .delete(
+        `https://onehealth-backend.onrender.com/api/admin/nurse/${id}`,
+        headerToken
+      )
       .then((res) => {
         window.location.reload();
       })
@@ -64,17 +70,24 @@ const ManageNurse = () => {
                 ) : (
                   nurses.map((nurse) => (
                     <tr key={nurse._id}>
-                      <td className="border  text-center p-2">NUR - {nurse._id}</td>
-                      <td className="border  text-center p-2">{nurse.firstName} {nurse.lastName}</td>
                       <td className="border  text-center p-2">
-                        {nurse.email}
+                        NUR - {nurse._id}
                       </td>
-                      <td className="border  text-center p-2">{nurse.licenseNumber}</td>
+                      <td className="border  text-center p-2">
+                        {nurse.firstName} {nurse.lastName}
+                      </td>
+                      <td className="border  text-center p-2">{nurse.email}</td>
+                      <td className="border  text-center p-2">
+                        {nurse.licenseNumber}
+                      </td>
                       <td className="border  text-center p-2">
                         <button className="px-4 py-2 bg-blue-500 text-white rounded mr-2">
                           Edit
                         </button>
-                        <button className="px-4 py-2 bg-red-500 text-white rounded" onClick={() => handleDelete(nurse._id)}>
+                        <button
+                          className="px-4 py-2 bg-red-500 text-white rounded"
+                          onClick={() => handleDelete(nurse._id)}
+                        >
                           Delete
                         </button>
                       </td>

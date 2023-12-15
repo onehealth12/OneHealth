@@ -22,7 +22,10 @@ const ManageMedTech = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/medTech/get", headerToken)
+      .get(
+        "https://onehealth-backend.onrender.com/api/admin/medTech/get",
+        headerToken
+      )
       .then((res) => {
         setMedTechs(res.data);
       })
@@ -31,7 +34,10 @@ const ManageMedTech = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:5000/api/admin/medTech/${id}`, headerToken)
+      .delete(
+        `https://onehealth-backend.onrender.com/api/admin/medTech/${id}`,
+        headerToken
+      )
       .then((res) => {
         window.location.reload();
       })
@@ -64,17 +70,26 @@ const ManageMedTech = () => {
                 ) : (
                   medTechs.map((medTech) => (
                     <tr key={medTech._id}>
-                      <td className="border  text-center p-2">MT - {medTech._id}</td>
-                      <td className="border  text-center p-2">{medTech.firstName} {medTech.lastName}</td>
+                      <td className="border  text-center p-2">
+                        MT - {medTech._id}
+                      </td>
+                      <td className="border  text-center p-2">
+                        {medTech.firstName} {medTech.lastName}
+                      </td>
                       <td className="border  text-center p-2">
                         {medTech.email}
                       </td>
-                      <td className="border  text-center p-2">{medTech.licenseNumber}</td>
+                      <td className="border  text-center p-2">
+                        {medTech.licenseNumber}
+                      </td>
                       <td className="border  text-center p-2">
                         <button className="px-4 py-2 bg-blue-500 text-white rounded mr-2">
                           Edit
                         </button>
-                        <button className="px-4 py-2 bg-red-500 text-white rounded" onClick={() => handleDelete(medTech._id)}>
+                        <button
+                          className="px-4 py-2 bg-red-500 text-white rounded"
+                          onClick={() => handleDelete(medTech._id)}
+                        >
                           Delete
                         </button>
                       </td>
