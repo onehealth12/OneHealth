@@ -22,7 +22,7 @@ const ManageNurse = () => {
 
   useEffect(() => {
     axios
-      .get("https://onehealth-backend.onrender.com/api/admin/nurse/get", headerToken)
+      .get("http://localhost:5000/api/admin/nurse/get", headerToken)
       .then((res) => {
         setNurses(res.data);
       })
@@ -31,7 +31,7 @@ const ManageNurse = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`https://onehealth-backend.onrender.com/api/admin/nurse/${id}`, headerToken)
+      .delete(`http://localhost:5000/api/admin/nurse/${id}`, headerToken)
       .then((res) => {
         window.location.reload();
       })

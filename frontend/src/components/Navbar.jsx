@@ -8,6 +8,8 @@ import { AiOutlineClose } from "react-icons/ai";
 import PatientNavigation from "./contents/PatientNavigation";
 import DoctorNavigation from "./contents/DoctorNavigation";
 import NurseNavigation from "./contents/NurseNavigation";
+import MedTechNavigation from "./contents/MedTechNavigation";
+import RadTechNavigation from "./contents/RadTechNavigation";
 
 const Navbar = ({ userRole }) => {
   const [open, setOpen] = useState(false);
@@ -22,7 +24,7 @@ const Navbar = ({ userRole }) => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        "https://onehealth-backend.onrender.com/api/patient/logout",
+        "http://localhost:5000/api/patient/logout",
         null
       );
 
@@ -52,6 +54,8 @@ const Navbar = ({ userRole }) => {
           {userRole === 'patient' && <PatientNavigation/>}
           {userRole === 'doctor' && <DoctorNavigation/>}
           {userRole === 'nurse' && <NurseNavigation/>}
+          {userRole === 'medTech' && <MedTechNavigation/>}
+          {userRole === 'radTech' && <RadTechNavigation/>}
         </ul>
       </div>
 

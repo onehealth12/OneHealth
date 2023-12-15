@@ -2,36 +2,41 @@ import React, { useState, useEffect } from "react";
 import { useStore } from "../../store";
 import axios from "axios";
 
-const Diagnose = ({ visible, onClose, id }) => {
-  const [departments, setDepartments] = useState([])
+const Diagnose = ({ visible, onClose, id, token }) => {
+  const [doctor, setDoctor] = useState([])
   const { addDiagnosis } = useStore();
   const [diagnoses, setDiagnoses] = useState([])
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [selectedDiagnosis, setSelectedDiagnosis] = useState("");
-
-
+  const [diagnosisNotes, setDiagnosisNotes] = useState("");
+  // DOCTOR API
   useEffect(() => {
-   axios.get('https://onehealth-backend.onrender.com/api/doctor/department')
-        .then((res) => {
-          setDepartments(res.data)
-        })
-        .catch((err) => ("Error: "+ err))
-  }, [])
+    axios
+      .get("http://localhost:5000/api/doctor/get", token)
+      .then((res) => {
+        setDoctor(res.data);
 
-  useEffect(() => {
-    if (selectedDepartment) {
-      axios
-        .get(
-          `https://onehealth-backend.onrender.com/api/doctor/diagnosis/${selectedDepartment}`
-        )
-        .then((res) => {
-          setDiagnoses(res.data);
-        });
-    }
-  }, [selectedDepartment]);
+        // Assuming that the doctor object has a dept_id property
+        const deptId = res.data.dept_id;
+
+        // Automatically select the department based on the doctor's department
+        setSelectedDepartment(deptId);
+
+        // Fetch diagnoses based on the selected department
+        if (deptId) {
+          axios
+            .get(`http://localhost:5000/api/doctor/diagnosis/${deptId}`)
+            .then((res) => {
+              setDiagnoses(res.data);
+            });
+        }
+      })
+      .catch((err) => console.error("Error: " + err));
+  }, [token]);
+
   
   const handleUpdate = () => {
-    addDiagnosis(id, selectedDiagnosis);
+    addDiagnosis(id, selectedDiagnosis, diagnosisNotes);
     onClose();
   };
 
@@ -64,16 +69,6 @@ const Diagnose = ({ visible, onClose, id }) => {
           <h2 className="text-2xl font-semibold">Patient's Diagnosis</h2>
         </div>
         <div className="modal-content p-4">
-          <label className="block">Department</label>
-          <select
-            className="bg-[#ccd6f6] p-2 focus:outline-none text-black"
-            onChange={(e) => setSelectedDepartment(e.target.value)}
-          >
-            <option value="">Select Department</option>
-            {departments.map((department) => (
-              <option key={department._id} value={department._id}>{department.name}</option>
-            ))}
-          </select>
 
           <label className="block mt-4">Diagnosis Name</label>
           <select
@@ -85,6 +80,15 @@ const Diagnose = ({ visible, onClose, id }) => {
               <option key={diag._id} value={diag._id}>{diag.name}</option>
             ))}
           </select>
+          <label className="block mt-4">Diagnosis Notes</label>
+          <textarea
+            className="bg-[#ccd6f6] p-2 focus:outline-none text-black resize-none"
+            onChange={(e) => setDiagnosisNotes(e.target.value)
+            }
+            value={diagnosisNotes}
+            cols={30}   
+            rows={5}   
+          />
         </div>
         <div className="modal-footer bg-gray-100 p-4 rounded-b-lg flex justify-end">
           <button

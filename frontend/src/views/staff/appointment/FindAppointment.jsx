@@ -3,7 +3,7 @@ import Sidebar from "../../../components/Sidebar";
 import { useReceptionistStore, useStore } from "../../../store";
 import io from "socket.io-client"; // Import the socket.io-client library
 
-const socket = io("https://onehealth-backend.onrender.com"); 
+const socket = io("http://localhost:5000");
 
 const FindAppointment = () => {
   const [userRole, setUserRole] = useState("receptionist");
@@ -30,32 +30,6 @@ const FindAppointment = () => {
     };
   }, [getAllTodaysAppointments]);
 
-  const handleUpdate = (id, currentStatus) => {
-    let nextStatus;
-
-    switch (currentStatus) {
-      case "Upcoming":
-        nextStatus = "Reception";
-        break;
-      case "Reception":
-        nextStatus = "Assessment";
-        break;
-      case "Assessment":
-        nextStatus = "Testing";
-        break;
-      case "Testing":
-        nextStatus = "Consultation";
-        break;
-      case "Consultation":
-        nextStatus = "Done";
-        break;
-      default:
-        return;
-    }
-
-    updateAppointmentStatus(id, nextStatus);
-  };
-
   const filteredAppointments = appointments.filter(
     (appointment) =>
       appointment.patientId.firstName
@@ -66,22 +40,28 @@ const FindAppointment = () => {
   );
 
   const formatTime = (date) => {
-    const options = { hour: 'numeric', minute: '2-digit', hour12: true };
-    return new Intl.DateTimeFormat('en-US', options).format(date);
+    const options = { hour: "numeric", minute: "2-digit", hour12: true };
+    return new Intl.DateTimeFormat("en-US", options).format(date);
   };
 
-  const sortedStatusOrder = ["Upcoming", "Reception", "Assessment", "Testing", "Consultation"];
+  const sortedStatusOrder = [
+    "Upcoming",
+    "Reception",
+    "Assessment",
+    "Testing",
+    "Consultation",
+  ];
 
   const compareStatus = (a, b) => {
     const indexA = sortedStatusOrder.indexOf(a);
     const indexB = sortedStatusOrder.indexOf(b);
-  
+
     return indexA - indexB;
   };
   const sortedAppointments = filteredAppointments.sort((a, b) => {
     const statusA = a.appt_status;
     const statusB = b.appt_status;
-  
+
     return compareStatus(statusA, statusB);
   });
   return (
@@ -103,7 +83,7 @@ const FindAppointment = () => {
               />
             </div>
           </div>
-          <div className="">
+          <div className="mr-4">
             <div className=" overflow-y-auto max-h-[600px]">
               <table className="w-full border-collapse border text-sm mx-auto">
                 <thead className="text-xs bg-grey-300 uppercase bg-gray-50 sticky top-0">
@@ -115,7 +95,6 @@ const FindAppointment = () => {
                     <th className="py-6 px-6 bg-[#4867D6]">Doctor Name</th>
                     <th className="py-6 px-6 bg-[#4867D6]">Department</th>
                     <th className="py-6 px-6 bg-[#4867D6]">Status</th>
-                    <th className="py-6 px-6 bg-[#4867D6]">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -132,7 +111,9 @@ const FindAppointment = () => {
                           ).toLocaleDateString()}
                         </td>
                         <td className="py-3 px-6">
-                        {formatTime(new Date(appointment.appointmentDateTime))}
+                          {formatTime(
+                            new Date(appointment.appointmentDateTime)
+                          )}
                         </td>
                         <td className="py-3 px-6">{appointment._id}</td>
                         <td className="py-3 px-6">
@@ -140,30 +121,17 @@ const FindAppointment = () => {
                           {appointment.patientId.lastName}
                         </td>
                         <td className="py-3 px-6">
-                        {appointment.doctorId && appointment.doctorId.firstName}{" "}
-        {appointment.doctorId && appointment.doctorId.lastName}
+                          {appointment.doctorId &&
+                            appointment.doctorId.firstName}{" "}
+                          {appointment.doctorId &&
+                            appointment.doctorId.lastName}
                         </td>
                         <td className="py-3 px-6">
-                        {appointment.doctorId && appointment.doctorId.dept_id && appointment.doctorId.dept_id.name}
+                          {appointment.doctorId &&
+                            appointment.doctorId.dept_id &&
+                            appointment.doctorId.dept_id.name}
                         </td>
                         <td className="py-3 px-6">{appointment.appt_status}</td>
-                        <td className="p-2" key={`upcoming-${appointment._id}`}>
-                          {["Upcoming", "Reception"].includes(
-                            appointment.appt_status
-                          ) && (
-                            <button
-                              className="bg-[#4867D6] text-white px-3 py-1 rounded-md"
-                              onClick={() =>
-                                handleUpdate(
-                                  appointment._id,
-                                  appointment.appt_status
-                                )
-                              }
-                            >
-                              Update
-                            </button>
-                          )}
-                        </td>
                       </tr>
                     ))
                   )}

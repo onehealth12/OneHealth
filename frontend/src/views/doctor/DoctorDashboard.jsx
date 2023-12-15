@@ -6,9 +6,9 @@ import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import interactionPlugin from "@fullcalendar/interaction";
 import { PieChart, Pie, Tooltip } from "recharts";
 import io from "socket.io-client";
-const socket = io("https://onehealth-backend.onrender.com");
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
+const socket = io("http://localhost:5000");
 const DoctorDashboard = () => {
   const [userRole, setUserRole] = useState("doctor");
   const { appointments, getAllTimeAppointments } = useStore();

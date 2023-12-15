@@ -1,10 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const Availability = require('../models/availabilityModel');
 const Doctor = require('../models/doctor.model')
-const moment = require('moment-timezone'); // Import moment-timezone
+const moment = require('moment-timezone');
 
 const getAvailability = asyncHandler(async (req, res) => {
-  
   Availability.find({ doctorId: req.user.id })
     .then(availabilities => {
       res.json(availabilities);
@@ -12,11 +11,9 @@ const getAvailability = asyncHandler(async (req, res) => {
     .catch(error => {
       res.status(500).json("Error: " + error);
     });
-
-
 });
+
 const getAllAvailability = asyncHandler(async (req, res) => {
-  
   Availability.find({}).populate({
     path: "doctorId",
     select: "firstName lastName specialization dept_id",
@@ -31,12 +28,10 @@ const getAllAvailability = asyncHandler(async (req, res) => {
     .catch(error => {
       res.status(500).json("Error: " + error);
     });
-
-
 });
 
 const getAvailabilityByDoctorId = asyncHandler(async (req, res) => {
-  const doctorId = req.params.id; // Assuming the doctor's ID is in the route parameters
+  const doctorId = req.params.id;
 
   try {
     const doctor = await Doctor.findById(doctorId);
@@ -54,28 +49,22 @@ const getAvailabilityByDoctorId = asyncHandler(async (req, res) => {
 
 const createAvailability = asyncHandler(async (req, res) => {
   const doctorId = req.user.id;
-  const { title, start, end } = req.body;
+  const { daysAvailability } = req.body;
 
-  if ( !title || !start || !end) {
+  if (!daysAvailability || !Array.isArray(daysAvailability) || daysAvailability.length === 0) {
     res.status(400);
-    throw new Error("Please fill all fields");
+    throw new Error("Please provide valid availability data");
   }
 
-
-const newAvailability = new Availability({
-    title,
-    start,
-    end,
-    doctorId
+  const newAvailability = new Availability({
+    doctorId,
+    daysAvailability,
   });
-  
 
-newAvailability
-  .save()
-  .then((availability) => res.json(newAvailability))
-  .catch((err) => res.status(400).json("Error: " + err));
+  newAvailability.save()
+    .then(availability => res.json(availability))
+    .catch(err => res.status(400).json("Error: " + err));
 });
-
 
 const deleteAvailability = asyncHandler(async (req, res) => {
   const doctor = await Doctor.findById(req.user.id);
@@ -93,7 +82,6 @@ const deleteAvailability = asyncHandler(async (req, res) => {
         return res.status(401).json({ error: "User not authorized" });
       }
 
-      // If the user is authorized, proceed with the deletion
       Availability.findByIdAndDelete(req.params.id)
         .then(() => {
           return res.json({ message: "Availability was deleted" });
@@ -103,5 +91,46 @@ const deleteAvailability = asyncHandler(async (req, res) => {
     .catch((err) => res.status(400).json({ error: "Error: " + err }));
 });
 
+const updateAvailability = asyncHandler(async (req, res) => {
+  const doctorId = req.user.id;
+  const availabilityId = req.params.id
+  const {  updatedAvailability } = req.body;
 
-module.exports = {getAvailability, createAvailability, deleteAvailability, getAvailabilityByDoctorId, getAllAvailability };
+  if (!availabilityId) {
+    res.status(400);
+    throw new Error("Please provide availabilityId");
+  }
+
+  if ( !updatedAvailability) {
+    res.status(400);
+    throw new Error("Please provide updatedAvailability");
+  }
+
+  try {
+    const availability = await Availability.findById(availabilityId);
+
+    if (!availability) {
+      return res.status(404).json({ error: "Availability not found" });
+    }
+
+    if (availability.doctorId.toString() !== doctorId) {
+      return res.status(401).json({ error: "User not authorized" });
+    }
+
+    availability.daysAvailability = updatedAvailability;
+
+    const savedAvailability = await availability.save();
+    res.json(savedAvailability);
+  } catch (error) {
+    res.status(500).json({ error: "Error updating availability", details: error.message });
+  }
+});
+
+module.exports = {
+  getAvailability,
+  createAvailability,
+  deleteAvailability,
+  getAvailabilityByDoctorId,
+  getAllAvailability,
+  updateAvailability
+};

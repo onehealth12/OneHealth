@@ -53,7 +53,7 @@ const ViewPdf = () => {
   useEffect(() => {
     // Fetch the appointment data using the appointment ID
     axios
-      .get(`https://onehealth-backend.onrender.com/api/patient/appointment/${appointmentId}`)
+      .get(`http://localhost:5000/api/patient/appointment/${appointmentId}`)
       .then((res) => {
         // Set the appointment data in the state
         setAppointmentData(res.data);
@@ -176,27 +176,44 @@ const ViewPdf = () => {
                   </View>
 
                   <View style={styles.footer}>
-                    {appointmentData.doctorId.signature && (
-                      <Image
-                        style={{ width: '100%', height: 150, }}
-                        src={appointmentData.doctorId.signature.url}
-                      />
+                    {appointmentData.doctorId &&
+                      appointmentData.doctorId.signature && (
+                        <Image
+                          style={{ width: "100%", height: 150 }}
+                          src={appointmentData.doctorId.signature.url}
+                        />
+                      )}
+                    {appointmentData.doctorId && (
+                      <Text
+                        style={{
+                          marginBottom: 5,
+                          fontSize: 18,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {appointmentData.doctorId.firstName}{" "}
+                        {appointmentData.doctorId.lastName}, M.D.
+                      </Text>
                     )}
-                    <Text
-                      style={{
-                        marginBottom: 5,
-                        fontSize: 18,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {appointmentData.doctorId.firstName}{" "}
-                      {appointmentData.doctorId.lastName}, M.D.
-                    </Text>
-                    <Text style={{marginTop: 15,marginBottom: 5, fontSize: 14 }}>
-                      Lic No.: {appointmentData.doctorId.licenseNumber}
-                    </Text>
-                    <Text style={{marginTop: 15,marginBottom: 5, fontSize: 14 }}>PTR No.</Text>
-                    <Text style={{marginTop: 15, fontSize: 14 }}>S2 No.</Text>
+                    {appointmentData.doctorId && (
+                      <Text
+                        style={{ marginTop: 15, marginBottom: 5, fontSize: 14 }}
+                      >
+                        Lic No.: {appointmentData.doctorId.licenseNumber}
+                      </Text>
+                    )}
+                    {appointmentData.doctorId && (
+                      <Text
+                        style={{ marginTop: 15, marginBottom: 5, fontSize: 14 }}
+                      >
+                        PTR No.
+                      </Text>
+                    )}
+                    {appointmentData.doctorId && (
+                      <Text style={{ marginTop: 15, fontSize: 14 }}>
+                        S2 No.
+                      </Text>
+                    )}
                   </View>
                 </View>
               </View>

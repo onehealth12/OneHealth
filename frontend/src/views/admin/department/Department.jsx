@@ -19,7 +19,7 @@ const Department = () => {
 
   useEffect(() => {
     axios
-      .get("https://onehealth-backend.onrender.com/api/admin/department/get", headerToken)
+      .get("http://localhost:5000/api/admin/department/get", headerToken)
       .then((res) => {
         setDepartments(res.data);
       })
@@ -28,7 +28,7 @@ const Department = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.post('https://onehealth-backend.onrender.com/api/admin/department/create', {name}, headerToken)
+    axios.post('http://localhost:5000/api/admin/department/create', {name}, headerToken)
           .then((res) => {
             setName('')
             console.log(res.data)
@@ -38,7 +38,7 @@ const Department = () => {
   }
 
   const handleDelete = (id) => {
-    axios.delete(`https://onehealth-backend.onrender.com/api/admin/department/${id}`, headerToken)
+    axios.delete(`http://localhost:5000/api/admin/department/${id}`, headerToken)
           .then((res) => {
             window.location.reload()
           })
@@ -46,7 +46,7 @@ const Department = () => {
   }
 
   const handleUpdate = (id) => {
-    axios.delete(`https://onehealth-backend.onrender.com/api/admin/department/${id}`, headerToken)
+    axios.delete(`http://localhost:5000/api/admin/department/${id}`, headerToken)
           .then((res) => {
             window.location.reload()
           })

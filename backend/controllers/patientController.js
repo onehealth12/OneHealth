@@ -5,7 +5,7 @@ const Patient = require("../models/patientModel");
 const { generateToken } = require("../middlewares/generateToken");
 const AddressModel = require("../models/addressModel");
 
-//Get All Patient
+
 const getPatient = asyncHandler(async (req, res) => {
   Patient.findById(req.user.id)
     .then((patient) => res.json(patient))

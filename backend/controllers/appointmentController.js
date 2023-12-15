@@ -67,6 +67,7 @@ const getAppointment = asyncHandler(async (req, res) => {
     if (appointments.length === 0) {
       return res.status(200).json("No Appointments");
     }
+    io.emit("patientRealTimeAppointments", appointments);
     res.json(appointments);
   } catch (err) {
     res.status(400).json("Error: " + err);
@@ -80,19 +81,50 @@ const getAppointmentById = asyncHandler(async (req, res) => {
       .populate("doctorId")
       .populate("prescription")
       .populate("patientId")
-      .populate("labResult");
+      .populate("labResult")
+      .populate("diagnosis"); // Populate the diagnosis field
 
     if (!appointment) {
       return res.status(404).json("Appointment not found");
     }
 
-    res.json(appointment);
+    
+    // Fetch past diagnoses for the patient
+    const pastAppointments = await Appointment.find({
+      patientId: appointment.patientId,
+      appointmentDateTime: { $lt: appointment.appointmentDateTime }, // Find appointments before the current one
+    })
+      .sort({ appointmentDateTime: -1 }) // Sort in descending order
+      .populate("diagnosis");
+
+      
+    // Use a Set to store unique past diagnosis names
+    const uniquePastDiagnoses = new Set();
+
+    // Extract unique past diagnoses
+    pastAppointments.forEach((pastAppointment) => {
+      const pastDiagnosis = pastAppointment.diagnosis;
+      if (pastDiagnosis) {
+        uniquePastDiagnoses.add(pastDiagnosis.name);
+      }
+    });
+
+    const lastAppointment = pastAppointments.length > 0 ? pastAppointments[0].appointmentDateTime : null;
+
+    const appointmentWithPastDiagnoses = {
+      ...appointment.toObject(),
+      lastAppointment,
+      pastDiagnoses: Array.from(uniquePastDiagnoses),
+    };
+    
+    res.json(appointmentWithPastDiagnoses);
   } catch (err) {
     res.status(400).json("Error: " + err);
   }
 });
 
-//Doctor get appointments
+
+//Doctor get all appointments
 const doctorGetAppointments = asyncHandler(async (req, res) => {
   try {
     const appointments = await Appointment.find({ doctorId: req.user.id })
@@ -144,8 +176,6 @@ const doctorGetAppointments = asyncHandler(async (req, res) => {
     res.status(400).json("Error: " + err);
   }
 });
-
-
 
 
 const doctorGetTodaysAppointments = asyncHandler(async (req, res) => {
@@ -305,24 +335,18 @@ const updateAppointment = asyncHandler(async (req, res) => {
       return res.status(404).json({ error: "Appointment not found" });
     }
 
-    // Check if the requested status is in the allowed states
-    const allowedStatus = [
-      "Reception",
-      "Assessment",
-      "Testing",
-      "Consultation",
-      "Done",
-    ];
-    if (!allowedStatus.includes(status)) {
-      return res.status(400).json({ error: "Invalid status" });
+    // Check if the new status is the same as the old status
+    if (appointment.appt_status === status) {
+      // If yes, alternate between the current status and "Done"
+      appointment.appt_status = appointment.appt_status === "Done" ? status : "Done";
+    } else {
+      // If not, update the appointment status with the provided status
+      appointment.appt_status = status;
     }
-
-    // Update the appointment status
-    appointment.appt_status = status;
 
     // Save the updated appointment
     await appointment.save();
-    
+
     // Emit the event to update the client side
     io.emit("appointmentUpdated", appointment);
     return res.json(appointment);
@@ -331,9 +355,11 @@ const updateAppointment = asyncHandler(async (req, res) => {
   }
 });
 
+
 const addDiagnosis = asyncHandler(async (req, res) => {
   const appointmentId = req.params.id;
-  const diagnosisId = req.params.diagnosisId;
+  const diagnosisNotes = req.body.diagnosisNotes
+  const diagnosisId = req.params.selectedDiagnosis;
 
   try {
     const appointment = await Appointment.findById(appointmentId);
@@ -342,8 +368,10 @@ const addDiagnosis = asyncHandler(async (req, res) => {
       return res.status(404).json({ error: "Appointment not found" });
     }
 
+
     // Update the appointment status
     appointment.diagnosis = diagnosisId;
+    appointment.diagnosisNotes = diagnosisNotes;
 
     // Save the updated appointment
     await appointment.save();

@@ -105,7 +105,7 @@ const AddPrescriptionModal = ({ visible, onClose, id }) => {
                         name="notes"
                         value={medicine.notes}
                         onChange={(event) => handleMedicineChange(index, event)}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-2 border border-gray-300 rounded resize-none"
                       />
                     </div>
                   </div>

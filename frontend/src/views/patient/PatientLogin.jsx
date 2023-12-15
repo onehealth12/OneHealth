@@ -15,7 +15,7 @@ const PatientLogin = () => {
     e.preventDefault();
   
     axios
-      .post("https://onehealth-backend.onrender.com/api/patient/login", { loginIdentifier, password })
+      .post("http://localhost:5000/api/patient/login", { loginIdentifier, password })
       .then((res) => {
         localStorage.setItem("token", JSON.stringify(res.data));
         console.log("Logged in successfully");

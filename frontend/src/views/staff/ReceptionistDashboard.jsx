@@ -21,7 +21,11 @@ const ReceptionistDashboard = () => {
     getAllAppointments();
     getAllAvailability();
   }, []);
-
+  // Helper function to get day name based on day index (0-6)
+  const getDayName = (dayIndex) => {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    return days[dayIndex];
+  };
   const today = new Date();
   today.setHours(today.getHours()); // Adjust for Singapore time zone offset
   const todayString =
@@ -42,15 +46,25 @@ const ReceptionistDashboard = () => {
 
   // Filter availabilities for today
   const todayAvailabilities = availabilities.filter(
-    (availability) =>
-      availability.start.includes(yesterdayString) ||
-      availability.end.includes(yesterdayString)
+    (availability) => {
+      const todayAvailability = availability.daysAvailability.find(
+        (dayAvailability) => dayAvailability.day === getDayName(today.getDay())
+      );
+
+      return (
+        todayAvailability &&
+        todayAvailability.startTime &&
+        todayAvailability.endTime
+      );
+    }
   );
 
   // Get the list of available doctors
   const availableDoctors = todayAvailabilities.map(
     (availability) => availability.doctorId
   );
+
+
 
   // Filter appointments for today
   const todayAppointments = appointments.filter((appointment) =>
@@ -84,6 +98,7 @@ const ReceptionistDashboard = () => {
     "November",
     "December",
   ];
+
   const filteredAppointments =
     selectedReason === "All"
       ? appointments
@@ -110,6 +125,7 @@ const ReceptionistDashboard = () => {
     value: monthlyAppointments[month] || 0,
   }));
 
+
   const getCurrentAndPreviousMonth = (date) => {
     const currentMonth = date.getMonth();
     const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
@@ -123,6 +139,7 @@ const ReceptionistDashboard = () => {
   const { currentMonth, previousMonth } = getCurrentAndPreviousMonth(
     new Date()
   );
+
   // Calculate percentage change compared to the previous month
   const calculatePercentageChange = (currentMonth, previousMonth) => {
     if (previousMonth === 0 && currentMonth === 0) {
@@ -161,11 +178,7 @@ const ReceptionistDashboard = () => {
     ),
   }));
 
-  const formatTime = (startTime, endTime) => {
-    const formattedStartTime = new Date(startTime).toLocaleTimeString();
-    const formattedEndTime = new Date(endTime).toLocaleTimeString();
-    return `${formattedStartTime} - ${formattedEndTime}`;
-  };
+
 
   return (
     <div className="flex h-screen">

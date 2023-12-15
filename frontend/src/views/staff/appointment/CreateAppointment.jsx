@@ -37,7 +37,7 @@ const CreateAppointment = () => {
   };
   useEffect(() => {
     axios
-      .get("https://onehealth-backend.onrender.com/api/department/get")
+      .get("http://localhost:5000/api/department/get")
       .then((res) => {
         setDepartments(res.data);
       })
@@ -48,7 +48,7 @@ const CreateAppointment = () => {
     if (selectedDepartment) {
       axios
         .get(
-          `https://onehealth-backend.onrender.com/api/doctor/department/${selectedDepartment}`
+          `http://localhost:5000/api/doctor/department/${selectedDepartment}`
         )
         .then((res) => {
           setDoctors(res.data);
@@ -59,7 +59,7 @@ const CreateAppointment = () => {
   useEffect(() => {
     if (selectedDoctor) {
       axios
-        .get(`https://onehealth-backend.onrender.com/api/doctor/availability/${selectedDoctor}`)
+        .get(`http://localhost:5000/api/doctor/availability/${selectedDoctor}`)
         .then((res) => {
           // console.log(selectedDoctor);
           setAvailabilities(res.data);
@@ -121,7 +121,7 @@ const CreateAppointment = () => {
 
     axios
       .post(
-        "https://onehealth-backend.onrender.com/api/receptionist/appointment/create",
+        "http://localhost:5000/api/receptionist/appointment/create",
         payload
       )
       .then((res) => {

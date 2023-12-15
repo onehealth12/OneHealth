@@ -7,7 +7,7 @@ const DoctorNavigation = () => {
 
   const handleLogout = async () => {
     axios
-      .post("https://onehealth-backend.onrender.com/api/doctor/logout", null)
+      .post("http://localhost:5000/api/doctor/logout", null)
       .then((res) => {
         localStorage.removeItem("token");
         navigate("/hospital/auth/login");
@@ -25,10 +25,13 @@ const DoctorNavigation = () => {
         <Link to="/hospital/doctor/">Dashboard</Link>
       </li>
       <li className="">
-        <Link to="/hospital/doctor/schedule">Visit Patient Status</Link>
+        <Link to="/hospital/doctor/tracker">Tracker</Link>
       </li>
       <li className="">
         <Link to="/hospital/doctor/appointments">Appointment History</Link>
+      </li>
+      <li className="">
+        <Link to="/hospital/doctor/scanner">Scanner</Link>
       </li>
       <li>
         <Link to="/hospital/doctor/availability">Availability</Link>

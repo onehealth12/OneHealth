@@ -45,7 +45,7 @@ const SelectTime = ({ token, visible, onClose, onDelete, selectedDateInfo, initi
     };
   
     axios
-      .post("https://onehealth-backend.onrender.com/api/doctor/availability/create", eventObject, headerToken)
+      .post("http://localhost:5000/api/doctor/availability/create", eventObject, headerToken)
       .then((res) => {
         console.log(res.data);
       })

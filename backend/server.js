@@ -9,18 +9,17 @@ const patientRoutes = require('./routes/patientRoutes')
 const departmentRoutes = require('./routes/departmentRoutes')
 const nurseRoutes = require('./routes/nurseRoutes')
 const receptionistRoutes = require('./routes/receptionistRoutes')
+const medTechRoutes = require('./routes/medTechRoutes')
+const radTechRoutes = require('./routes/radTechRoutes')
 
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 // middleware
-app.use(cors({
-  origin: 'https://onehealth-frontend.onrender.com',
-}));
+app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
 // mogodb connection
 const uri = process.env.ATLAS_URI;
 mongoose.connect(uri);
@@ -37,6 +36,8 @@ app.use('/api/doctor', doctorRoutes)
 app.use('/api/patient', patientRoutes)
 app.use('/api/department', departmentRoutes)
 app.use('/api/nurse', nurseRoutes)
+app.use('/api/medTech', medTechRoutes)
+app.use('/api/radTech', radTechRoutes)
 app.use('/api/receptionist', receptionistRoutes)
 
 
@@ -46,7 +47,7 @@ const server = app.listen(port, () => {
 
 io = require ('socket.io')(server, {
   cors: {
-    origin: 'https://onehealth-frontend.onrender.com',
+    origin: '*',
   },
 })
 

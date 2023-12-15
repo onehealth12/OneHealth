@@ -45,7 +45,7 @@ const UploadFile = ({ visible, onClose, id }) => {
     try {
       // Use axios to send an array of files
       const { data } = await axios.post(
-        "https://onehealth-backend.onrender.com/api/nurse/appointment/labresult/create/",
+        "http://localhost:5000/api/medTech/appointment/labresult/create/",
         { appointmentId: id, labFiles }
       );
 

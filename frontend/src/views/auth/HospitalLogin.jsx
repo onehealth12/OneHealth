@@ -13,7 +13,7 @@ const HospitalLogin = () => {
 
     if (role === "Admin") {
       axios
-        .post("https://onehealth-backend.onrender.com/api/admin/login", { email, password })
+        .post("http://localhost:5000/api/admin/login", { email, password })
         .then((res) => {
           localStorage.setItem("token", JSON.stringify(res.data));
           console.log("Login Successfully as Admin");
@@ -22,7 +22,7 @@ const HospitalLogin = () => {
         .catch((err) => console.log("Error: " + err));
     } else if (role === "Doctor") {
       axios
-        .post("https://onehealth-backend.onrender.com/api/doctor/login", { email, password })
+        .post("http://localhost:5000/api/doctor/login", { email, password })
         .then((res) => {
           localStorage.setItem("token", JSON.stringify(res.data));
           console.log("Login Successfully as Doctor");
@@ -31,16 +31,40 @@ const HospitalLogin = () => {
         .catch((err) => console.log("Error: " + err));
     } else if (role === "Nurse") {
       axios
-        .post("https://onehealth-backend.onrender.com/api/nurse/login", { email, password })
+        .post("http://localhost:5000/api/nurse/login", { email, password })
         .then((res) => {
           localStorage.setItem("token", JSON.stringify(res.data));
           console.log("Login Successfully as Nurse");
           navigate("/hospital/nurse");
         })
         .catch((err) => console.log("Error: " + err));
+    } else if (role === "Med Tech") {
+      axios
+        .post("http://localhost:5000/api/medTech/login", {
+          email,
+          password,
+        })
+        .then((res) => {
+          localStorage.setItem("token", JSON.stringify(res.data));
+          console.log("Login Successfully as Staff");
+          navigate("/hospital/medtech/");
+        })
+        .catch((err) => console.log("Error: " + err));
+    } else if (role === "Rad Tech") {
+      axios
+        .post("http://localhost:5000/api/radTech/login", {
+          email,
+          password,
+        })
+        .then((res) => {
+          localStorage.setItem("token", JSON.stringify(res.data));
+          console.log("Login Successfully as Staff");
+          navigate("/hospital/radtech/");
+        })
+        .catch((err) => console.log("Error: " + err));
     } else if (role === "Staff") {
       axios
-        .post("https://onehealth-backend.onrender.com/api/receptionist/login", {
+        .post("http://localhost:5000/api/receptionist/login", {
           email,
           password,
         })
@@ -89,6 +113,8 @@ const HospitalLogin = () => {
               <option value="Admin">Admin</option>
               <option value="Doctor">Doctor</option>
               <option value="Nurse">Nurse</option>
+              <option value="Med Tech">Med Tech</option>
+              <option value="Rad Tech">Rad Tech</option>
               <option value="Staff">Staff</option>
             </select>
           </div>

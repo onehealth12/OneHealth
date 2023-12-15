@@ -118,12 +118,13 @@ const PatientHome = () => {
               <div className="mt-4 grid grid-cols-1 gap-y-2 gap-x-4">
                 <label className="text-white">Message</label>
                 <textarea
+                className="resize-none"
                   name=""
                   id=""
                   cols="30"
                   rows="5"
                   placeholder="Enter your message here"
-                ></textarea>
+                />
               </div>
               <div className="mt-4">
                 <button className="bg-white w-full p-2">Submit</button>

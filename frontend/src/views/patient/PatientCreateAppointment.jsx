@@ -23,7 +23,9 @@ const PatientCreateAppointment = () => {
     setHours(setMinutes(new Date(), 0), 8)
   );
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [minTime, setMinTime] = useState(null);
+  const [maxTime, setMaxTime] = useState(null);
+    const [selectedDays, setSelectedDays] = useState([]);
   const notify = () => {
 
     toast.success("Booked Successfully !", {
@@ -52,7 +54,7 @@ const PatientCreateAppointment = () => {
 
   useEffect(() => {
     axios
-      .get("https://onehealth-backend.onrender.com/api/department/get")
+      .get("http://localhost:5000/api/department/get")
       .then((res) => {
         setDepartments(res.data);
       })
@@ -63,7 +65,7 @@ const PatientCreateAppointment = () => {
     if (selectedDepartment) {
       axios
         .get(
-          `https://onehealth-backend.onrender.com/api/doctor/department/${selectedDepartment}`
+          `http://localhost:5000/api/doctor/department/${selectedDepartment}`
         )
         .then((res) => {
           setDoctors(res.data);
@@ -71,42 +73,49 @@ const PatientCreateAppointment = () => {
     }
   }, [selectedDepartment]);
 
+
+
+
   useEffect(() => {
     if (selectedDoctor) {
       axios
-        .get(`https://onehealth-backend.onrender.com/api/doctor/availability/${selectedDoctor}`)
+        .get(`http://localhost:5000/api/doctor/availability/${selectedDoctor}`)
         .then((res) => {
-          console.log(selectedDoctor);
           setAvailabilities(res.data);
-          console.log(res.data);
-        });
+          
+          // Extract unique days from the response
+          const availableDays = [...new Set(res.data.flatMap(entry => entry.daysAvailability.map(day => day.day)))];
+          setSelectedDays(availableDays);
+  
+          // Find minTime and maxTime
+          let minTime = "23:59";
+          let maxTime = "00:00";
+  
+          res.data.forEach(entry => {
+            entry.daysAvailability.forEach(day => {
+              // Compare and update minTime
+              if (day.startTime < minTime) {
+                minTime = day.startTime;
+              }
+  
+              // Compare and update maxTime
+              if (day.endTime > maxTime) {
+                maxTime = day.endTime;
+              }
+            });
+          });
+  
+          // Set minTime and maxTime in the state
+          setMinTime(new Date(`2000/01/01 ${minTime}`));
+          setMaxTime(new Date(`2000/01/01 ${maxTime}`));
+  
+        })
+        .catch((err) => console.log("Error fetching doctor availability: " + err));
     }
   }, [selectedDoctor]);
+  
 
-  useEffect(() => {
-    if (availabilities.length > 0) {
-      const validDateRange = availabilities
-        .map((availability) => {
-          const startDate = new Date(availability.start);
-          const endDate = new Date(availability.end);
-          const dates = [];
-          for (
-            let date = startDate;
-            date <= endDate;
-            date.setDate(date.getDate() + 1)
-          ) {
-            dates.push(new Date(date));
-          }
-          return dates;
-        })
-        .flat()
-        .filter((date) => date >= new Date());
-  
-      console.log("Available Dates:", validDateRange); // Add this line
-  
-      setAvailableDates(validDateRange);
-    }
-  }, [availabilities]);
+
 
   const handleDateChange = (date) => {
     const selectedDate = new Date(date);
@@ -140,7 +149,7 @@ const PatientCreateAppointment = () => {
 
     axios
       .post(
-        "https://onehealth-backend.onrender.com/api/patient/appointment/create",
+        "http://localhost:5000/api/patient/appointment/create",
         appointment,
         headerToken
       )
@@ -158,7 +167,26 @@ const PatientCreateAppointment = () => {
   };
 
 
+  const getFutureDatesForDay = (day) => {
+    const today = new Date();
+    const currentDayIndex = today.getDay();
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayIndex = daysOfWeek.indexOf(day);
+    
+    let daysToAdd = dayIndex - currentDayIndex;
+    if (daysToAdd < 0) daysToAdd += 7; // If the day is in the past, add 7 to get the next occurrence
+    
+    const futureDates = [];
+    for (let i = 0; i < 4; i++) { // Adjust the loop limit as needed
+      const date = new Date(today);
+      date.setDate(today.getDate() + daysToAdd + 7 * i);
+      futureDates.push(date);
+    }
 
+    return futureDates;
+  };
+
+  
   return (
     <>
       <Navbar userRole={userRole}/>
@@ -226,26 +254,15 @@ const PatientCreateAppointment = () => {
                   </span>
                 </label>
                 <DatePicker
-                  includeTimes={[
-                    new Date().setHours(8, 0, 0, 0),
-                    new Date().setHours(9, 0, 0, 0),
-                    new Date().setHours(10, 0),
-                    new Date().setHours(11, 0),
-                    new Date().setHours(13, 0),
-                    new Date().setHours(14, 0),
-                    new Date().setHours(15, 0),
-                    new Date().setHours(16, 0),
-                    new Date().setHours(17, 0),
-                  ]}
                   filterTime={filterPassedTime}
                   selected={startDate}
                   onChange={handleDateChange}
                   dateFormat="yyyy/MM/d h:mm aa"
-                  includeDates={availableDates}
+                  includeDates={selectedDays.flatMap(getFutureDatesForDay)}
                   showTimeSelect
                   timeIntervals={60} // Set the time intervals as needed
-                  minTime={new Date().setHours(8, 0, 0)} // 8:00 AM
-                  maxTime={new Date().setHours(17, 0, 0)} // 2:00 PM
+                  minTime={minTime}
+                  maxTime={maxTime}
                   disabled={!selectedDoctor}
                   placeholderText="Select Date and Time "
                 />
