@@ -6,7 +6,7 @@ const ViewPatientModal = ({ visible, onClose, appointment }) => {
 
   const navigate = useNavigate();
 
-  const { _id, appointmentDateTime, labResult } = appointment;
+  const { _id, appointmentDateTime, labResult, pastDiagnoses } = appointment;
 
   const patientId = appointment.patientId._id;
   const { firstName, lastName, email, mobileNumber } = appointment.patientId;
@@ -56,6 +56,18 @@ const ViewPatientModal = ({ visible, onClose, appointment }) => {
           <p className="mb-2">
             <span className="font-semibold">Mobile Number:</span> {mobileNumber}
           </p>
+          <p className="mb-2">
+        <span className="font-semibold">Past Diagnoses:</span>{" "}
+        {pastDiagnoses && pastDiagnoses.length > 0 ? (
+          <ul>
+            {pastDiagnoses.map((diagnosis, index) => (
+              <li key={index}>{diagnosis}</li>
+            ))}
+          </ul>
+        ) : (
+          "No past diagnoses available"
+        )}
+      </p>
         </div>
         <div className="p-4">
           <label className="block text-lg font-semibold mb-2">
