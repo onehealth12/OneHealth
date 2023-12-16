@@ -152,7 +152,7 @@ const AppointmentDetails = ({ selectedAppointment }) => {
                 <QRCode
                   id={selectedAppointment._id}
                   value={selectedAppointment._id}
-                  size={80}
+                  size={300}
                   level={"H"}
                   includeMargin={true}
                 />
