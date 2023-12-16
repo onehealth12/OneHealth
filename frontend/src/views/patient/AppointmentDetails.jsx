@@ -157,7 +157,7 @@ const AppointmentDetails = ({ selectedAppointment }) => {
                   includeMargin={true}
                 />
                 <a
-                  className="p-1 bg-[#4867D6] text-white"
+                  className="p-1 bg-[#4867D6] text-white cursor-pointer"
                   onClick={() => downloadQR(selectedAppointment._id)}
                 >
                   Download QR Code
