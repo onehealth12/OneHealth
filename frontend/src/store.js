@@ -16,11 +16,11 @@ export const useStore = create((set) => ({
         }
       )
       .then((res) => {
-        if (Array.isArray(res.data)) {
-          set({ appointments: res.data });
-        } else {
-          console.log("Response is not an array");
-        }
+        // Ensure that res.data is an array
+        const appointmentsData = Array.isArray(res.data) ? res.data : [];
+
+        // Update the state with the array
+        set({ appointments: appointmentsData });
       })
       .catch((err) => console.log(err));
   },
