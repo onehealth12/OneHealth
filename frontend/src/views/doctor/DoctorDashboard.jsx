@@ -8,6 +8,7 @@ import { PieChart, Pie, Tooltip } from "recharts";
 import io from "socket.io-client";
 
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
+import UnifiedPatientTracker from "../../components/UnifiedPatientTracker";
 const socket = io("https://onehealth-backend.onrender.com");
 const DoctorDashboard = () => {
   const [userRole, setUserRole] = useState("doctor");
@@ -87,10 +88,13 @@ const DoctorDashboard = () => {
   const nextPatient =
     appointmentsForToday.length > 0 ? appointmentsForToday[0] : null;
   return (
-    <div className="bg-gray-200 min-h-screen">
+    <div className="bg-gray-100 min-h-screen">
       <Navbar userRole={userRole} />
       {/* Container */}
       <section className=" p-2">
+        <div className="h-screen">
+          <UnifiedPatientTracker />
+        </div>
         <div className="flex gap-x-2 p-2 h-1/2">
           <div className="bg-white rounded-md w-1/5 flex items-center shadow-lg p-4">
             {appointmentsForToday.length === 0 ? (

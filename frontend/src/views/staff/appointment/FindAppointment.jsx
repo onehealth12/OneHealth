@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/Sidebar";
-import { useReceptionistStore, useStore } from "../../../store";
+import { useReceptionistStore } from "../../../store";
 import io from "socket.io-client"; // Import the socket.io-client library
 
 const socket = io("https://onehealth-backend.onrender.com");
@@ -8,7 +8,6 @@ const socket = io("https://onehealth-backend.onrender.com");
 const FindAppointment = () => {
   const [userRole, setUserRole] = useState("receptionist");
   const { getAllTodaysAppointments, appointments } = useReceptionistStore();
-  const { updateAppointmentStatus } = useStore();
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -17,7 +16,6 @@ const FindAppointment = () => {
     const token = tokenObject.token;
     getAllTodaysAppointments(token);
 
-    // Set up Socket.IO event listeners
     socket.on("appointmentUpdated", (updatedAppointment) => {
       // Handle the updated appointment, you might want to update the state or perform other actions
       console.log("Appointment Updated:", updatedAppointment);

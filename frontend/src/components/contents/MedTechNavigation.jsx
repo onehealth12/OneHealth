@@ -21,7 +21,10 @@ const MedTechNavigation = () => {
   return (
     <>
       <li className="">
-        <Link to="/hospital/medtech">Tracker</Link>
+        <Link to="/hospital/medtech">Dashboard</Link>
+      </li>
+      <li className="">
+        <Link to="/hospital/medtech/tracker">Tracker</Link>
       </li>
       <li className="">
         <Link to="/hospital/medtech/scanner">Scanner</Link>

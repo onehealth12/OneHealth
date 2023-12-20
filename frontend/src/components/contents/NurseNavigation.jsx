@@ -21,7 +21,10 @@ const NurseNavigation = () => {
   return (
     <>
       <li className="">
-        <Link to="/hospital/nurse">Tracker</Link>
+        <Link to="/hospital/nurse">Dashboard</Link>
+      </li>
+      <li className="">
+        <Link to="/hospital/nurse/tracker">Tracker</Link>
       </li>
       <li className="">
         <Link to="/hospital/nurse/scanner">Scanner</Link>

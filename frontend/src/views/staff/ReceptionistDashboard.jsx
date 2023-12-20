@@ -6,6 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { BarChart, XAxis, YAxis, Tooltip, Bar } from "recharts";
 import { useReceptionistStore } from "../../store";
 import ReactHtmlTableToExcel from "react-html-table-to-excel";
+import UnifiedPatientTracker from "../../components/UnifiedPatientTracker";
 
 const ReceptionistDashboard = () => {
   const [userRole, setUserRole] = useState("receptionist");
@@ -184,6 +185,9 @@ const ReceptionistDashboard = () => {
     <div className="flex h-screen">
       <Sidebar userRole={userRole} />
       <section className="w-full bg-gray-200 p-4 overflow-auto">
+        <div className="h-screen">
+          <UnifiedPatientTracker/>
+        </div>
         <div className="flex gap-x-4 p-4">
           <div className="rounded-md w-1/12 grid gap-y-2">
             <div className="bg-white rounded-md p-2 shadow-lg">

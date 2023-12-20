@@ -52,7 +52,5 @@ io = require ('socket.io')(server, {
 })
 
 io.on('connection', (socket) => {
-
-
   socket.emit("Data", "First Emit")
 })

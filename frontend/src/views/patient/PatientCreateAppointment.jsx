@@ -261,7 +261,7 @@ const PatientCreateAppointment = () => {
                   </span>
                 </label>
                 <DatePicker
-                  // filterTime={filterPassedTime}
+                  filterTime={filterPassedTime}
                   selected={startDate}
                   onChange={handleDateChange}
                   dateFormat="yyyy/MM/d h:mm aa"

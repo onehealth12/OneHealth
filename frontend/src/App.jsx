@@ -38,6 +38,9 @@ import MedTechTracker from "./views/medTech/MedTechTracker";
 import MedTechScanner from "./views/medTech/MedTechScanner";
 import RadTechScanner from "./views/radTech/RadTechScanner";
 import RadTechTracker from "./views/radTech/RadTechTracker";
+import NurseDashboard from "./views/nurse/NurseDashboard";
+import MedTechDashboard from "./views/medTech/MedTechDashboard";
+import RadTechDashboard from "./views/radTech/RadTechDashboard";
 
 function App() {
   return (
@@ -100,15 +103,18 @@ function App() {
         />
 
         {/**Nurse Routes */}
-        <Route path="/hospital/nurse/" element={<NurseTracker />} />
+        <Route path="/hospital/nurse/" element={<NurseDashboard />} />
+        <Route path="/hospital/nurse/tracker" element={<NurseTracker />} />
         <Route path="/hospital/nurse/scanner" element={<NurseScanner />} />
 
         {/**Med Tech Routes */}
-        <Route path="/hospital/medtech/" element={<MedTechTracker />} />
+        <Route path="/hospital/medtech/" element={<MedTechDashboard />} />
+        <Route path="/hospital/medtech/tracker" element={<MedTechTracker />} />
         <Route path="/hospital/medtech/scanner" element={<MedTechScanner />} />
 
         {/*Rad Tech Routes */}
-        <Route path="/hospital/radtech/" element={<RadTechTracker />} />
+        <Route path="/hospital/radtech/" element={<RadTechDashboard />} />
+        <Route path="/hospital/radtech/tracker" element={<RadTechTracker />} />
         <Route path="/hospital/radtech/scanner" element={<RadTechScanner />} />
 
         {/**Receptionist Routes */}
