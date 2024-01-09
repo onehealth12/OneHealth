@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/Sidebar";
 import axios from "axios";
+import EditRadTechModal from "../../../components/modals/EditRadTechModal";
 
 const ManageRadTech = () => {
   const [userRole, setUserRole] = useState("admin");
   const [radTechs, setRadTechs] = useState([]);
-
+  const [selectedRadTech, setSelectedRadTech] = useState(null);
+  const [showEditRadTech, setShowEditRadTech] = useState(false);
+  const handleClose = () => setShowEditRadTech(false);
   //Get token object
   const tokenObject = JSON.parse(localStorage.getItem("token"));
 
@@ -83,7 +86,13 @@ const ManageRadTech = () => {
                         {radTech.licenseNumber}
                       </td>
                       <td className="border  text-center p-2">
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded mr-2">
+                        <button
+                          className="px-4 py-2 bg-blue-500 text-white rounded mr-2"
+                          onClick={() => {
+                            setSelectedRadTech(radTech);
+                            setShowEditRadTech(true);
+                          }}
+                        >
                           Edit
                         </button>
                         <button
@@ -92,6 +101,15 @@ const ManageRadTech = () => {
                         >
                           Delete
                         </button>
+                        <EditRadTechModal
+                          radTech={selectedRadTech}
+                          visible={showEditRadTech}
+                          onClose={() => {
+                            setSelectedRadTech(null);
+                            setShowEditRadTech(false);
+                          }}
+                          headerToken={headerToken}
+                        />
                       </td>
                     </tr>
                   ))

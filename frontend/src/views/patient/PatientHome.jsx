@@ -1,4 +1,4 @@
-import {useState, React} from "react";
+import { useState, React, useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import hero from "../../assets/Hero.png";
 import { MdLocationOn } from "react-icons/md";
@@ -9,22 +9,32 @@ import genMedIcon from "../../assets/stethoscope.svg";
 import interMedIcon from "../../assets/viral_lung_infection.svg";
 import pediaIcon from "../../assets/pediatrics.svg";
 import { useNavigate } from "react-router-dom";
-
-
+import axios from "axios";
 
 const PatientHome = () => {
   const [userRole, setUserRole] = useState("patient");
-  const navigate = useNavigate()
+  const [announcements, setAnnouncements] = useState([]);
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/patient/book')
-  }
+    navigate("/patient/book");
+  };
 
+  useEffect(() => {
+    axios
+      .get("https://onehealth-backend.onrender.com/api/announcement/")
+      .then((res) => {
+        setAnnouncements(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <>
       <div className="w-full h-screen">
-      <Navbar userRole={userRole}/>
+        <Navbar userRole={userRole} />
 
         {/**Hero */}
         <div className="h-[91vh]">
@@ -35,17 +45,54 @@ const PatientHome = () => {
                 ONE CAINTA HOSPITAL
               </h1>
               <p className="font-semibold text-4xl">Welcome to OneHealth</p>
-              <button  onClick={handleClick} className="bg-[#4867D6] uppercase w-full p-4 text-white mt-8">
+              <button
+                onClick={handleClick}
+                className="bg-[#4867D6] uppercase w-full p-4 text-white mt-8"
+              >
                 Book an appointment
               </button>
             </div>
           </div>
         </div>
 
+        {/**Announcements */}
+        {announcements.length === 0 ? (
+          <></>
+        ) : (
+          <div className="md:min-h-screen bg-[#4867D6]">
+            <div className="py-8 text-white">
+              <h1 className="font-bold text-4xl text-center pt-4 text-white mb-8">
+                Announcements
+              </h1>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {announcements.map((announcement) => (
+                  <div key={announcement._id}>
+                    {announcement.announcementImage &&
+                      announcement.announcementImage.length > 0 &&
+                      announcement.announcementImage.map(
+                        (image, index) =>
+                          image.url && (
+                            <img
+                              key={index}
+                              src={image.url}
+                              alt={`Announcement ${index + 1}`}
+                              className="w-full object-fit object-center"
+                            />
+                          )
+                      )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/**Services */}
         <div className="md:h-screen bg-[#4867D6]">
           <div className="py-4 text-white ">
-            <h1 className="font-bold text-4xl text-center pt-4 text-white mb-4">Our Services</h1>
+            <h1 className="font-bold text-4xl text-center pt-4 text-white mb-4">
+              Our Services
+            </h1>
             <p className="md:w-2/3 lg:w-3/5 mx-auto text-center">
               The Cainta Municipal Hospital is a government-owned, general,
               level 1 that provides free medigal and surgical treatment.
@@ -118,7 +165,7 @@ const PatientHome = () => {
               <div className="mt-4 grid grid-cols-1 gap-y-2 gap-x-4">
                 <label className="text-white">Message</label>
                 <textarea
-                className="resize-none"
+                  className="resize-none"
                   name=""
                   id=""
                   cols="30"
@@ -136,7 +183,9 @@ const PatientHome = () => {
                     color="white"
                     fontSize="3em"
                   />
-                  <p className="break-words text-center">Municipal Compound, Brgy. Sto. Domingo, Cainta, Rizal</p>
+                  <p className="break-words text-center">
+                    Municipal Compound, Brgy. Sto. Domingo, Cainta, Rizal
+                  </p>
                 </div>
                 <div className="w-4/5 p-4">
                   <BsFillTelephoneFill

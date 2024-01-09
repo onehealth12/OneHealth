@@ -77,11 +77,12 @@ const updateNurse = asyncHandler(async (req, res) => {
           throw new Error("User not authorized");
         }
   
-        const { name, email, password} = req.body;
+        const { firstName, lastName, email, licenseNumber} = req.body;
   
-        nurse.name = name;
+        nurse.firstName = firstName;
+        nurse.lastName = lastName;
         nurse.email = email;
-        nurse.password = password;
+        nurse.licenseNumber = licenseNumber;
   
   
         nurse

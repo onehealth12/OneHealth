@@ -75,16 +75,17 @@ const updateMedtech = asyncHandler(async (req, res) => {
           throw new Error("User not authorized");
         }
   
-        const { name, email, password} = req.body;
+        const { firstName, lastName, email, licenseNumber} = req.body;
   
-        medTech.name = name;
+        medTech.firstName = firstName;
+        medTech.lastName = lastName;
         medTech.email = email;
-        medTech.password = password;
+        medTech.licenseNumber = licenseNumber;
   
   
         medTech
           .save()
-          .then(() => res.json("Nurse was updated"))
+          .then(() => res.json("Med Tech was updated"))
           .catch((err) => res.status(400).json("Error: " + err));
       })
       .catch((err) => res.status(400).json("Error: " + err));

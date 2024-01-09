@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../../components/Sidebar";
 import axios from "axios";
+import EditNurseModal from "../../../components/modals/EditNurseModal";
 
 const ManageNurse = () => {
   const [userRole, setUserRole] = useState("admin");
   const [nurses, setNurses] = useState([]);
-
+  const [selectedNurse, setSelectedNurse] = useState(null);
+  const [showEditNurse, setShowEditNurse] = useState(false);
+  const handleClose = () => setShowEditNurse(false);
   //Get token object
   const tokenObject = JSON.parse(localStorage.getItem("token"));
 
@@ -81,7 +84,13 @@ const ManageNurse = () => {
                         {nurse.licenseNumber}
                       </td>
                       <td className="border  text-center p-2">
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded mr-2">
+                        <button
+                          className="px-4 py-2 bg-blue-500 text-white rounded mr-2"
+                          onClick={() => {
+                            setSelectedNurse(nurse);
+                            setShowEditNurse(true);
+                          }}
+                        >
                           Edit
                         </button>
                         <button
@@ -90,6 +99,15 @@ const ManageNurse = () => {
                         >
                           Delete
                         </button>
+                        <EditNurseModal
+                          nurse={selectedNurse}
+                          visible={showEditNurse}
+                          onClose={() => {
+                            setSelectedNurse(null);
+                            setShowEditNurse(false);
+                          }}
+                          headerToken={headerToken}
+                        />
                       </td>
                     </tr>
                   ))

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import PatientLogin from "./views/patient/PatientLogin";
 import PatientDashboard from "./views/patient/PatientDashboard";
 import PatientCreateAppointment from "./views/patient/PatientCreateAppointment";
@@ -42,15 +42,19 @@ import NurseDashboard from "./views/nurse/NurseDashboard";
 import MedTechDashboard from "./views/medTech/MedTechDashboard";
 import RadTechDashboard from "./views/radTech/RadTechDashboard";
 
+
 function App() {
   return (
-    <>
+    <Router>
       <Routes>
+
         {/**Visitor Routes */}
         <Route path="/pdf" element={<ViewPdf />} />
         <Route path="/" element={<PatientHome />} />
         <Route path="/login" element={<PatientLogin />} />
         <Route path="/register" element={<PatientRegister />} />
+        {/**Hospital Auth */}
+        <Route path="/hospital/auth/login" element={<HospitalLogin />} />
 
         {/**Patient Routes */}
         <Route path="/patient/profile" element={<PatientProfile />} />
@@ -60,8 +64,6 @@ function App() {
         />
         <Route path="/patient/book" element={<PatientCreateAppointment />} />
 
-        {/**Hospital Auth */}
-        <Route path="/hospital/auth/login" element={<HospitalLogin />} />
         {/**Admin Routes */}
         <Route path="/hospital/admin/diagnosis" element={<DianosisList />} />
         <Route
@@ -147,7 +149,7 @@ function App() {
           element={<ReceptionistScanner />}
         />
       </Routes>
-    </>
+    </Router>
   );
 }
 

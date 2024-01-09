@@ -50,7 +50,7 @@ const Navbar = ({ userRole }) => {
     <div className="w-m h-[70px] flex justify-between items-center px-4 bg-[#4867D6] text-white  ">
       <img src={logo} width="200px" />
       <div className="w-1/3">
-        <ul className="hidden md:flex md:justify-end gap-x-4 font-semibold">
+        <ul className="hidden md:flex md:justify-center gap-x-4 font-semibold">
           {userRole === "patient" && <PatientNavigation />}
           {userRole === "doctor" && <DoctorNavigation />}
           {userRole === "nurse" && <NurseNavigation />}

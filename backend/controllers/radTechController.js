@@ -74,11 +74,12 @@ const updateRadTech = asyncHandler(async (req, res) => {
                 throw new Error("User not authorized");
             }
 
-            const { name, email, password} = req.body;
-
-            radTech.name = name;
+            const { firstName, lastName, email, licenseNumber} = req.body;
+  
+            radTech.firstName = firstName;
+            radTech.lastName = lastName;
             radTech.email = email;
-            radTech.password = password;
+            radTech.licenseNumber = licenseNumber;
 
             radTech
                 .save()

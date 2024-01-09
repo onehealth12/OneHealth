@@ -12,6 +12,37 @@ const getPatient = asyncHandler(async (req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
+const changePassword = asyncHandler(async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    res.status(400);
+    throw new Error("Please provide current and new passwords");
+  }
+
+  const patient = await Patient.findById(req.params.id);
+
+  if (!patient) {
+    res.status(404);
+    throw new Error("Patient not found");
+  }
+
+  const isPasswordValid = await bcrypt.compare(currentPassword, patient.password);
+
+  if (!isPasswordValid) {
+    res.status(401);
+    throw new Error("Incorrect current password");
+  }
+
+  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+  patient.password = hashedNewPassword;
+
+  await patient.save();
+
+  res.status(200).json({ message: "Password changed successfully" });
+});
+
+
 const searchPatient = asyncHandler(async (req, res) =>{
   try {
     const searchTerm = req.query.q; // Get the search term from the query parameter
@@ -216,4 +247,4 @@ const logoutPatient = asyncHandler(async (req, res) => {
 });
 //Update Patient
 
-module.exports = { getPatient, registerPatient, loginPatient, logoutPatient, createPatient, searchPatient, updatePatient };
+module.exports = { getPatient, registerPatient, loginPatient, logoutPatient, createPatient, searchPatient, updatePatient, changePassword };

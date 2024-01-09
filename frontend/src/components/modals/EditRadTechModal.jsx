@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const EditDoctorModal = ({ visible, onClose, doctor, headerToken }) => {
+const EditRadTechModal = ({ visible, onClose, radTech, headerToken }) => {
   if (!visible) return null;
-  const [editedDoctor, setEditedDoctor] = useState({
-    id: doctor._id,
-    firstName: doctor.firstName,
-    lastName: doctor.lastName,
-    email: doctor.email,
-    licenseNumber: doctor.licenseNumber,
+  const [editedRadTech, setEditedRadTech] = useState({
+    id: radTech._id,
+    firstName: radTech.firstName,
+    lastName: radTech.lastName,
+    email: radTech.email,
+    licenseNumber: radTech.licenseNumber,
   });
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEditedDoctor((prevDoctor) => ({
-      ...prevDoctor,
+    setEditedRadTech((prevRadTech) => ({
+      ...prevRadTech,
       [name]: value,
     }));
   };
@@ -21,7 +21,7 @@ const EditDoctorModal = ({ visible, onClose, doctor, headerToken }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const { id, firstName, lastName, email, licenseNumber } = editedDoctor;
+    const { id, firstName, lastName, email, licenseNumber } = editedRadTech;
 
     const payload = {
       firstName,
@@ -32,12 +32,12 @@ const EditDoctorModal = ({ visible, onClose, doctor, headerToken }) => {
 
     axios
       .put(
-        `https://onehealth-backend.onrender.com/api/admin/doctor/${id}`,
+        `https://onehealth-backend.onrender.com/api/admin/radTech/${id}`,
         payload,
         headerToken
       )
       .then((res) => {
-        setEditedDoctor(res.data);
+        setEditedRadTech(res.data);
         console.log(res.data);
         onClose(); // Close the modal after successful update
       })
@@ -72,7 +72,7 @@ const EditDoctorModal = ({ visible, onClose, doctor, headerToken }) => {
         </button>
         <form onSubmit={handleSubmit}>
           <div className="bg-[#4867D6] text-white p-4 rounded-t-lg">
-            <h2 className="text-2xl font-semibold">Edit Doctor Profile</h2>
+            <h2 className="text-2xl font-semibold">Edit RadTech Profile</h2>
           </div>
           <div className="p-4 grid g">
             <p className="mb-2">
@@ -80,7 +80,7 @@ const EditDoctorModal = ({ visible, onClose, doctor, headerToken }) => {
               <input
                 type="text"
                 name="firstName"
-                value={editedDoctor.firstName}
+                value={editedRadTech.firstName}
                 onChange={handleInputChange}
               />
             </p>
@@ -89,7 +89,7 @@ const EditDoctorModal = ({ visible, onClose, doctor, headerToken }) => {
               <input
                 type="text"
                 name="lastName"
-                value={editedDoctor.lastName}
+                value={editedRadTech.lastName}
                 onChange={handleInputChange}
               />
             </p>
@@ -98,7 +98,7 @@ const EditDoctorModal = ({ visible, onClose, doctor, headerToken }) => {
               <input
                 type="text"
                 name="email"
-                value={editedDoctor.email}
+                value={editedRadTech.email}
                 onChange={handleInputChange}
               />
             </p>
@@ -107,7 +107,7 @@ const EditDoctorModal = ({ visible, onClose, doctor, headerToken }) => {
               <input
                 type="text"
                 name="licenseNumber"
-                value={editedDoctor.licenseNumber}
+                value={editedRadTech.licenseNumber}
                 onChange={handleInputChange}
               />
             </p>
@@ -126,4 +126,4 @@ const EditDoctorModal = ({ visible, onClose, doctor, headerToken }) => {
   );
 };
 
-export default EditDoctorModal;
+export default EditRadTechModal;

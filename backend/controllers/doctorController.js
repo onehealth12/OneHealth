@@ -15,7 +15,9 @@ const getDoctorInfo = asyncHandler(async (req, res) => {
 //Get Doctor by Admin User
 const getDoctor = asyncHandler(async (req, res) => {
   Doctor.find({}).populate('dept_id', 'name')
-    .then((doctor) => res.json(doctor))
+    .then((doctor) => {
+      io.emit("realTimeGetDoctor", doctor);
+      res.json(doctor)})
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
@@ -121,24 +123,19 @@ const updateDoctor = asyncHandler(async (req, res) => {
           throw new Error("User not authorized");
         }
   
-        const { name, email, password, departmentName } = req.body;
+        const { firstName, lastName, email, licenseNumber} = req.body;
   
-        doctor.name = name;
+        doctor.firstName = firstName;
+        doctor.lastName = lastName;
         doctor.email = email;
-        doctor.password = password;
+        doctor.licenseNumber = licenseNumber;
   
-        if (departmentName) {
-          const department = await Department.findOne({ name: departmentName });
-          if (!department) {
-            res.status(400);
-            throw new Error("Department not found");
-          }
-          doctor.dept_id = department._id; // Update the department
-        }
   
         doctor
           .save()
-          .then(() => res.json("Doctor was updated"))
+          .then(() => {
+            io.emit("updatedDoctor", doctor);
+            res.json("Doctor was updated")})
           .catch((err) => res.status(400).json("Error: " + err));
       })
       .catch((err) => res.status(400).json("Error: " + err));

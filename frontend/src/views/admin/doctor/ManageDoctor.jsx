@@ -5,6 +5,9 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import EditDoctorModal from "../../../components/modals/EditDoctorModal";
 
+import io from "socket.io-client"; // Import the socket.io-client library
+const socket = io("https://onehealth-backend.onrender.com");
+
 const ManageDoctor = () => {
   const [userRole, setUserRole] = useState("admin");
   const [doctors, setDoctors] = useState([]);
@@ -30,6 +33,16 @@ const ManageDoctor = () => {
         setDoctors(res.data);
       })
       .catch((err) => console.log(err));
+
+    socket.on("realTimeGetDoctor", (doctors) => {
+      console.log("Doctors Updated:", doctors);
+      setDoctors(doctors); // Assuming doctors is an array received from the server
+    });
+
+    // Clean up the Socket.IO event listener on component unmount
+    return () => {
+      socket.off("realTimeGetDoctor");
+    };
   }, []);
 
   const notify = () => {
@@ -125,6 +138,7 @@ const ManageDoctor = () => {
                               setSelectedDoctor(null);
                               setShowEditDoctor(false);
                             }}
+                            headerToken={headerToken}
                           />
                         </td>
                       </tr>

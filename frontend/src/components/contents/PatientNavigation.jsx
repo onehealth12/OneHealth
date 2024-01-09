@@ -41,8 +41,8 @@ const PatientNavigation = () => {
 
       <ul className="">
         {isLoggedIn ? (
-          <>
-            <li className="relative" onClick={handleDropdownToggle}>
+          <div className="flex">
+            <li onClick={handleDropdownToggle}>
               <Link>
                 Profile{" "}
                 <BsCaretDownFill className=" inline-block align-middle" />
@@ -59,11 +59,13 @@ const PatientNavigation = () => {
                   </li>
                 </ul>
               )}
+            </li>
+            <li>
               <button className="ml-4" onClick={handleLogout}>
                 Logout
               </button>
             </li>
-          </>
+          </div>
         ) : (
           <Link to="/login">Login</Link>
         )}

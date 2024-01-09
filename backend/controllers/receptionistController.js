@@ -75,12 +75,13 @@ const updateReceptionist = asyncHandler(async (req, res) => {
           res.status(401);
           throw new Error("User not authorized");
         }
+
+        const { firstName, lastName, email, licenseNumber} = req.body;
   
-        const { name, email, password} = req.body;
-  
-        receptionist.name = name;
+        receptionist.firstName = firstName;
+        receptionist.lastName = lastName;
         receptionist.email = email;
-        receptionist.password = password;
+        receptionist.licenseNumber = licenseNumber;
   
   
         receptionist

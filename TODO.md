@@ -6,14 +6,18 @@ Project Description
 
 ### Todo
 
-- [ ] Private Routes  
-- [ ] Change Password Modal  
 
 ### In Progress
 
+- [ ] Announcement  
+- [ ] Diagnosis List (CRUD)  
+- [ ] Private Routes  
+- [ ] Change Password Modal  
 
 ### Done ✓
 
+- [x] Edit Hospital Users Profile  
+- [x] navbar profile and logout design bug  
 - [x] Realtime Patient's Appointment History  
 - [x] Redesign Patient Dashboard.  
 - [x] Edit Patient Tracker Designs  
