@@ -17,6 +17,9 @@ const PatientProfile = () => {
   const [birthday, setBirthday] = useState();
   const [email, setEmail] = useState();
   const [mobileNumber, setMobileNumber] = useState();
+  const [newPassword, setNewPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false); // Add checkbox
   // Get token object
   const tokenObject = JSON.parse(localStorage.getItem("token"));
@@ -102,11 +105,19 @@ const PatientProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (newPassword !== confirmPassword) {
+      // Passwords don't match
+      setPasswordsMatch(false);
+      return;
+    }
+
     const updatePatient = {
       firstName,
       lastName,
       email,
       mobileNumber,
+      newPassword, // Include the new password in the request
     };
 
     axios
@@ -144,7 +155,7 @@ const PatientProfile = () => {
             onSubmit={handleSubmit}
           >
             <div className="grid grid-cols-1 text-left text-lg break-words text-[#4867D6]">
-              <div className="grid grid-cols-2 mb-8 ">
+              <div className="grid grid-cols-2 mb-4 ">
                 <label className="font-semibold">First Name:</label>
                 <input
                   type="text"
@@ -153,7 +164,7 @@ const PatientProfile = () => {
                   onChange={(e) => setFirstName(e.target.value)}
                 />
               </div>
-              <div className="grid grid-cols-2 mb-8">
+              <div className="grid grid-cols-2 mb-4">
                 <label className="font-semibold">Last Name:</label>
                 <input
                   type="text"
@@ -162,15 +173,15 @@ const PatientProfile = () => {
                   onChange={(e) => setLastName(e.target.value)}
                 />
               </div>
-              <div className="grid grid-cols-2 mb-8">
+              <div className="grid grid-cols-2 mb-4">
                 <label className="font-semibold">Sex:</label>
                 <p className="text-black">{sex}</p>
               </div>
-              <div className="grid grid-cols-2 mb-8">
+              <div className="grid grid-cols-2 mb-4">
                 <label className="font-semibold">Date of Birth:</label>
                 <p className="text-black">{birthday}</p>
               </div>
-              <div className="grid grid-cols-2 mb-8">
+              <div className="grid grid-cols-2 mb-4">
                 <label className="font-semibold">Email:</label>
                 <input
                   type="text"
@@ -179,7 +190,7 @@ const PatientProfile = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-              <div className="grid grid-cols-2 mb-8">
+              <div className="grid grid-cols-2 mb-4">
                 <label className="font-semibold">Mobile Number:</label>
                 <input
                   type="text"
@@ -187,6 +198,32 @@ const PatientProfile = () => {
                   value={mobileNumber}
                   onChange={(e) => setMobileNumber(e.target.value)}
                 />
+              </div>
+              <div className="grid grid-cols-2 mb-4">
+                <label className="font-semibold">New Password:</label>
+                <input
+                  type="password"
+                  className="border border-black rounded-full text-sm px-4 text-black"
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </div>
+              <div className="grid grid-cols-2 mb-4">
+                <label className="font-semibold">Confirm Password:</label>
+                <input
+                  type="password"
+                  className={`border ${
+                    passwordsMatch ? "border-black" : "border-red-500"
+                  } rounded-full text-sm px-4 text-black`}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    setPasswordsMatch(newPassword === e.target.value);
+                  }}
+                />
+                {!passwordsMatch && (
+                  <p className="text-red-500 text-sm mt-1">
+                    Passwords do not match
+                  </p>
+                )}
               </div>
               <div className="text-black">
                 <input
@@ -200,15 +237,6 @@ const PatientProfile = () => {
               </div>
             </div>
             <div className="text-center space-x-2 mb-4">
-              <button
-                className={`mt-4 p-4 rounded-full mx-auto ${
-                  !isCheckboxChecked ? "bg-gray-500" : "bg-[#4867D6]"
-                } text-white`}
-                type="submit"
-                disabled={!isCheckboxChecked} // Disable the button if the checkbox is not checked
-              >
-                Change Password
-              </button>
               <button
                 className={`mt-4 p-4 rounded-full mx-auto ${
                   !isCheckboxChecked ? "bg-gray-500" : "bg-[#4867D6]"

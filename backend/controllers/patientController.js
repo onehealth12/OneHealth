@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 const Patient = require("../models/patientModel");
 const { generateToken } = require("../middlewares/generateToken");
 const AddressModel = require("../models/addressModel");
-
+const nodemailer = require("nodemailer");
 
 const getPatient = asyncHandler(async (req, res) => {
   Patient.findById(req.user.id)
@@ -12,35 +12,38 @@ const getPatient = asyncHandler(async (req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
-const changePassword = asyncHandler(async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
 
-  if (!currentPassword || !newPassword) {
-    res.status(400);
-    throw new Error("Please provide current and new passwords");
-  }
 
-  const patient = await Patient.findById(req.params.id);
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
 
+  //Check if the email exists in the database then get the ID
+  const patient = await Patient.findOne({ email })
+  
   if (!patient) {
     res.status(404);
     throw new Error("Patient not found");
   }
 
-  const isPasswordValid = await bcrypt.compare(currentPassword, patient.password);
+  //if it exists, generate a random 8 letter password to change its password
+  if (patient) {
+    const newPassword = Math.random().toString(36).slice(-8);
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    patient.password = hashedNewPassword;
 
-  if (!isPasswordValid) {
-    res.status(401);
-    throw new Error("Incorrect current password");
+    //Send it to email
+    await patient.save()
+                  .then(() => {
+                    sendPasswordResetEmail(email, newPassword);
+                    res.status(200).json({ message: "Password reset email sent" });
+                  })
+                  .catch((err) => {
+                    res.status(400).json("Error: " + err);
+                  })
   }
 
-  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-  patient.password = hashedNewPassword;
 
-  await patient.save();
-
-  res.status(200).json({ message: "Password changed successfully" });
-});
+})
 
 
 const searchPatient = asyncHandler(async (req, res) =>{
@@ -193,12 +196,17 @@ const updatePatient = asyncHandler(async (req, res) => {
       throw new Error("User not authorized");
     }
 
-    const { firstName, lastName, email, mobileNumber } = req.body;
+    const { firstName, lastName, email, mobileNumber, newPassword } = req.body;
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     patientToUpdate.firstName = firstName;
     patientToUpdate.lastName = lastName;
     patientToUpdate.email = email;
     patientToUpdate.mobileNumber = mobileNumber;
+    patientToUpdate.password = hashedPassword;
+
+    //hash the password
+
 
     await patientToUpdate.save();
     res.json("Record was updated");
@@ -247,4 +255,30 @@ const logoutPatient = asyncHandler(async (req, res) => {
 });
 //Update Patient
 
-module.exports = { getPatient, registerPatient, loginPatient, logoutPatient, createPatient, searchPatient, updatePatient, changePassword };
+module.exports = { getPatient, registerPatient, loginPatient, logoutPatient, createPatient, searchPatient, updatePatient, forgotPassword };
+
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER ,
+    pass: process.env.EMAIL_PASS 
+  },
+});
+
+async function sendPasswordResetEmail(
+  email,
+  newPassword
+) {
+  // Send mail with defined transport object
+  const info = await transporter.sendMail({
+    from: '"One Health Cainta" <onehealth.cainta@gmail.com>',
+    to: email,
+    subject: "New login password",
+    text: `Dear Patient,\n\nYour new login password is: ${newPassword} \n\nThank you for choosing our clinic.\n\nSincerely,\nOne Health Cainta Team`,
+    html: `<p>Dear Patient,</p><p>Your new login password is: ${newPassword}</p><p>Thank you for choosing our clinic.</p><p>Sincerely,<br>One Health Cainta Team</p>`,
+  });
+  console.log("Message sent: %s", info.messageId);
+}

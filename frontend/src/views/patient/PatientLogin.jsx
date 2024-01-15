@@ -80,7 +80,7 @@ const PatientLogin = () => {
               />
             </div>
             <div className="text-xs text-right font-light">
-              <a href="#" className="hover:text-slate-600">
+              <a href="/forgot/account" className="hover:text-slate-600">
                 Forgot your password?
               </a>
             </div>

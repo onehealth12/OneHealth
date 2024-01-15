@@ -1,5 +1,5 @@
 const { getAppointment, createAppointment, getAppointmentById } = require("../controllers/appointmentController");
-const { getPatient, registerPatient, loginPatient, logoutPatient, updatePatient, changePassword } = require("../controllers/patientController");
+const { getPatient, registerPatient, loginPatient, logoutPatient, updatePatient, forgotPassword } = require("../controllers/patientController");
 const { protect } = require("../middlewares/authMiddleware");
 const PatientModel = require("../models/patientModel");
 
@@ -10,7 +10,7 @@ router.post('/register', registerPatient)
 router.put('/:id', protect(PatientModel),updatePatient)
 router.post('/login', loginPatient)
 router.post('/logout', logoutPatient)
-router.put('/changePassword/:id', changePassword)
+router.post('/forgotPassword', forgotPassword)
 
 
 router.get('/appointment/get',protect(PatientModel) ,getAppointment )

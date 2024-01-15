@@ -6,16 +6,19 @@ Project Description
 
 ### Todo
 
+- [ ] Private Routes  
 
 ### In Progress
 
-- [ ] Announcement  
-- [ ] Diagnosis List (CRUD)  
-- [ ] Private Routes  
-- [ ] Change Password Modal  
 
 ### Done ✓
 
+- [x] fix staff name and patient tracker  
+- [x] Prescription Quantity Input(Number Only)  
+- [x] Admin Unified Patient Tracekr  
+- [x] Change Password  
+- [x] Diagnosis List (CRUD)  
+- [x] Announcement  
 - [x] Edit Hospital Users Profile  
 - [x] navbar profile and logout design bug  
 - [x] Realtime Patient's Appointment History  

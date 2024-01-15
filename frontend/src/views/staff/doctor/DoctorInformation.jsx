@@ -42,8 +42,6 @@ const DoctorInformation = () => {
                     <th className="border p-2">Name</th>
                     <th className="border p-2">Department</th>
                     <th className="border p-2">Specialization</th>
-                    <th className="border p-2">Clinic Address</th>
-                    <th className="border p-2">Clinic Number</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -63,8 +61,6 @@ const DoctorInformation = () => {
                         <td className="border  text-center p-2">
                           {doctor.specialization}
                         </td>
-                        <td className="border  text-center p-2">123 Street</td>
-                        <td className="border  text-center p-2">515-6322</td>
                       </tr>
                     ))
                   )}

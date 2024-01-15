@@ -41,6 +41,8 @@ import RadTechTracker from "./views/radTech/RadTechTracker";
 import NurseDashboard from "./views/nurse/NurseDashboard";
 import MedTechDashboard from "./views/medTech/MedTechDashboard";
 import RadTechDashboard from "./views/radTech/RadTechDashboard";
+import ForgotAccount from "./views/patient/ForgotAccount";
+import AdminDashboard from "./views/admin/AdminDashboard";
 
 
 function App() {
@@ -58,6 +60,7 @@ function App() {
 
         {/**Patient Routes */}
         <Route path="/patient/profile" element={<PatientProfile />} />
+        <Route path="/forgot/account" element={<ForgotAccount />} />
         <Route
           path="/patient/view-appointment"
           element={<PatientDashboard />}
@@ -74,6 +77,7 @@ function App() {
           path="/hospital/admin/announcement/manage"
           element={<ManageAnnouncement />}
         />
+        <Route path="/hospital/admin/dashboard" element={<AdminDashboard/>} />
         <Route path="/hospital/admin" element={<ManageDepartment />} />
         <Route path="/hospital/admin/doctor/add" element={<AddDoctor />} />
         <Route

@@ -91,6 +91,7 @@ const AddPrescriptionModal = ({ visible, onClose, id }) => {
                       <input
                         type="number"
                         step={1}
+                        min={1}
                         id={`quantity-${index}`}
                         name="quantity"
                         value={medicine.quantity}

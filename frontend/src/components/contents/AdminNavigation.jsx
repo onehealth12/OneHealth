@@ -52,6 +52,9 @@ const AdminNavigation = () => {
   return (
     <>
       <li className="py-4">
+        <a href="/hospital/admin/dashboard">Dashboard</a>
+      </li>
+      <li className="py-4">
         <a href="#" onClick={toggleAnnouncementMenu}>
           Announcement
           {showAnnouncementMenu ? " ▲" : " ▼"}

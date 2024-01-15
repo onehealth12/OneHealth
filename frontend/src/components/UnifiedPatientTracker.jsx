@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import io from "socket.io-client"; // Import the socket.io-client library
-import { useReceptionistStore } from "../store";
+import { useUnifiedPatientTrackerStore } from "../store";
+
 
 const socket = io("https://onehealth-backend.onrender.com");
 
 const UnifiedPatientTracker = () => {
-  const { getAllTodaysAppointments, appointments } = useReceptionistStore();
+  const { getAllTodaysAppointments, appointments } = useUnifiedPatientTrackerStore()
   const [departments, setDepartments] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [doctors, setDoctors] = useState([]);
@@ -67,11 +68,10 @@ const UnifiedPatientTracker = () => {
   }, [selectedDepartment]);
 
   const filterAppointments = () => {
-    let filteredAppointments = getFilteredAppointments(
-      "Consultation with Doctor"
-    );
-
+    let filteredAppointments = getFilteredAppointments("Consultation with Doctor");
+  
     if (selectedDepartment) {
+      
       setFilteredConsultations([]);
       filteredAppointments = filteredAppointments.filter(
         (appointment) => appointment.doctorId.dept_id._id === selectedDepartment
@@ -83,16 +83,20 @@ const UnifiedPatientTracker = () => {
         (appointment) => appointment.doctorId._id === selectedDoctor
       );
     }
-
+    
+  
     if (selectedDoctor && !selectedDepartment) {
       // If a doctor is selected without a department, reset both doctor and consultations
       setSelectedDoctor("");
       setFilteredConsultations([]);
     }
+  
 
+  
     // Update the state with filtered appointments
     setFilteredConsultations(filteredAppointments);
   };
+  
 
   // Use the useEffect hook to update filtered appointments when the selected values change
   useEffect(() => {
@@ -245,25 +249,25 @@ const UnifiedPatientTracker = () => {
             <ul className=" space-y-2">
               {filteredConsultations.map((appointment) => (
                 <li
-                  className="list-none m-2 text-white grid grid-cols-3 bg-green-500 text-xl p-2 text-center"
-                  key={appointment._id}
-                >
+                className="list-none m-2 text-white grid grid-cols-3 bg-green-500 text-xl p-2 text-center"
+                key={appointment._id}
+              >
+                <p>
+                  {appointment.patientId.firstName}{" "}
+                  {appointment.patientId.lastName}
+                </p>
+                <div>
                   <p>
-                    {appointment.patientId.firstName}{" "}
-                    {appointment.patientId.lastName}
+                    Doctor:{" "}
+                    {appointment.appt_status.replace(
+                      "Consultation with Dr. ",
+                      ""
+                    )}
                   </p>
-                  <div>
-                    <p>
-                      Doctor:{" "}
-                      {appointment.appt_status.replace(
-                        "Consultation with Dr. ",
-                        ""
-                      )}
-                    </p>
-                    <p>{appointment.doctorId.dept_id.name}</p>
-                  </div>
-                  <p>Ongoing</p>
-                </li>
+                  <p>{appointment.doctorId.dept_id.name}</p>
+                </div>
+                <p>Ongoing</p>
+              </li>
               ))}
             </ul>
           ) : (
