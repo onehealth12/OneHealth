@@ -51,7 +51,10 @@ const AddAnnouncement = () => {
       const { data } = await axios.post(
         "https://onehealth-backend.onrender.com/api/admin/announcement/create",
         payload
-      );
+      ).then((res) => {
+        //reload
+        window.location.reload();
+      })
 
       if (data.success === true) {
         setAnnouncementImages([]);
