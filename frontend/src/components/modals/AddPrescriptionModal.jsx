@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
-import { useStore } from '../../store';
-import axios from 'axios'
+import React, { useState } from "react";
+import { useStore } from "../../store";
+import axios from "axios";
 const AddPrescriptionModal = ({ visible, onClose, id }) => {
-  const [medicines, setMedicines] = useState([{ name: '', dosage: '', quantity: '', notes: '' }]);
-  const { createPrescription } = useStore() // Access the createPrescriptionWithMedicines method from your store
-  
+  const [medicines, setMedicines] = useState([
+    { name: "", dosage: "", quantity: "", notes: "" },
+  ]);
+  const { createPrescription } = useStore(); // Access the createPrescriptionWithMedicines method from your store
+
   const handleAddMedicine = () => {
-    setMedicines([...medicines, { name: '', dosage: '', quantity: '', notes: '' }]);
+    setMedicines([
+      ...medicines,
+      { name: "", dosage: "", quantity: "", notes: "" },
+    ]);
   };
 
   const handleMedicineChange = (index, event) => {
@@ -24,8 +29,8 @@ const AddPrescriptionModal = ({ visible, onClose, id }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    createPrescription(id, medicines);// Pass the medicines array along with the appointment ID
-    onClose()
+    createPrescription(id, medicines); // Pass the medicines array along with the appointment ID
+    onClose();
   };
 
   if (!visible) return null;
@@ -38,7 +43,7 @@ const AddPrescriptionModal = ({ visible, onClose, id }) => {
           onClick={onClose}
           className="absolute top-2 right-2 text-black hover:text-gray-700 focus:outline-none"
         >
-                    <svg
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
             fill="none"
@@ -56,12 +61,18 @@ const AddPrescriptionModal = ({ visible, onClose, id }) => {
         <div className="modal-header bg-[#4867D6] text-white p-4 rounded-t-lg">
           <h2 className="text-2xl font-semibold">Add Prescription</h2>
         </div>
-        <div className="modal-content p-4" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+        <div
+          className="modal-content p-4"
+          style={{ maxHeight: "400px", overflowY: "auto" }}
+        >
           <div>
             <h2>Prescription Form</h2>
             <form onSubmit={handleSubmit}>
               {medicines.map((medicine, index) => (
-                <div key={index} className="mb-4 p-4 border border-gray-300 rounded">
+                <div
+                  key={index}
+                  className="mb-4 p-4 border border-gray-300 rounded"
+                >
                   {/* Group inputs horizontally */}
                   <div className="flex">
                     <div className="w-1/4 pr-4">
@@ -89,13 +100,18 @@ const AddPrescriptionModal = ({ visible, onClose, id }) => {
                     <div className="w-1/4 pr-4">
                       <label htmlFor={`quantity-${index}`}>Quantity</label>
                       <input
-                        type="number"
-                        step={1}
-                        min={1}
+                        type="text"
                         id={`quantity-${index}`}
                         name="quantity"
                         value={medicine.quantity}
                         onChange={(event) => handleMedicineChange(index, event)}
+                        onInput={(event) => {
+                          // Allow only positive whole numbers
+                          event.target.value = event.target.value.replace(
+                            /[^0-9]/g,
+                            ""
+                          );
+                        }}
                         className="w-full p-2 border border-gray-300 rounded"
                       />
                     </div>
@@ -128,7 +144,10 @@ const AddPrescriptionModal = ({ visible, onClose, id }) => {
               >
                 Add Medicine
               </button>
-              <button type="submit" className="bg-blue-500 ml-4 text-white p-2 rounded hover:bg-blue-600">
+              <button
+                type="submit"
+                className="bg-blue-500 ml-4 text-white p-2 rounded hover:bg-blue-600"
+              >
                 Submit Prescription
               </button>
             </form>
